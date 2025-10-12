@@ -4,6 +4,7 @@ import {useGate, useUnit} from 'effector-solid'
 import {useParams} from '@solidjs/router'
 import * as artistModel from './model'
 import {TracksSection} from './TracksSection'
+import {AlbumSection} from './AlbumSection'
 
 const HEADER_TRIGGER_OFFSET = 64
 
@@ -73,8 +74,8 @@ const ArtistPage = () => {
 
   const artist = useUnit(artistModel.$artistData)
   const tracks = useUnit(artistModel.$popularTracks)
+  const albums = useUnit(artistModel.$albums)
 
-  const [expanded, setExpanded] = createSignal(false)
   const [headerVisible, setHeaderVisible] = createSignal(false)
 
   let scroller: HTMLDivElement | undefined
@@ -112,8 +113,6 @@ const ArtistPage = () => {
     })
   })
 
-  const visibleTracks = () => tracks().slice(0, expanded() ? 20 : 5)
-
   return (
     <div class="relative z-0 m-2 flex h-full min-h-0 flex-col">
       <Show
@@ -126,7 +125,6 @@ const ArtistPage = () => {
       >
         <div class="relative flex-1 overflow-hidden rounded-xl">
           <MiniHeaderBar name={artist()!.name} visible={headerVisible} />
-
           <div
             ref={(el) => (scroller = el)}
             class="bg-surface-1/50 relative h-full overflow-y-auto will-change-scroll"
@@ -143,12 +141,10 @@ const ArtistPage = () => {
             />
 
             <div class="relative z-10 flex flex-1 flex-col px-6 pt-6 pb-12">
-              <TracksSection
-                tracks={tracks}
-                visibleTracks={visibleTracks}
-                expanded={expanded}
-                toggleExpanded={() => setExpanded((v) => !v)}
-              />
+              <TracksSection tracks={tracks} />
+              <div class="mt-14">
+                <AlbumSection albums={albums} />
+              </div>
             </div>
           </div>
         </div>

@@ -47,6 +47,26 @@ sample({
   target: $popularTracks,
 })
 
+export const $albums = $artistData.map((a) => {
+  if (!a) return []
+  const albums = Object.values(a.albums)
+  const getTs = (ts: string | null) => {
+    if (!ts) return Number.NEGATIVE_INFINITY
+    const value = Date.parse(ts)
+    if (Number.isNaN(value)) return Number.NEGATIVE_INFINITY
+    return value
+  }
+  return albums
+    .slice()
+    .sort((albumA, albumB) => {
+      const byLastPlayed = getTs(albumB.lastTs) - getTs(albumA.lastTs)
+      if (byLastPlayed !== 0) return byLastPlayed
+      const byPlays = albumB.playsCount - albumA.playsCount
+      if (byPlays !== 0) return byPlays
+      return albumA.name.localeCompare(albumB.name)
+    })
+})
+
 export const $totalStats = $artistData.map((artist) => {
   if (!artist) return {plays: 0, hours: '0h 00m 00s'}
   return {

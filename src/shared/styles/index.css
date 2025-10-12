@@ -54,10 +54,16 @@ body {
   font-family: 'Fira Code Retina', monospace;
 }
 
-.hov-decor:hover {
-  text-decoration: underline;
+.hov-decor {
+  text-decoration: none;
   text-decoration-color: var(--color-accent);
-  text-underline-offset: 4px;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.hov-decor:hover,
+.hov-decor:focus-visible {
+  text-decoration-line: underline;
 }
 
 .focus-ring:focus-visible {
