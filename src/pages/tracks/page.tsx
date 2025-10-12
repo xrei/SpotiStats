@@ -54,16 +54,16 @@ const TracksPage = () => {
 
   return (
     <CollectionOverviewLayout>
-      <CollectionOverviewLayout.Summary>
-        <TotalStatsCard />
-        <TopTracks />
-      </CollectionOverviewLayout.Summary>
+      <CollectionOverviewLayout.SidePanel>
+        <CollectionOverviewLayout.SummaryGroup>
+          <TotalStatsCard />
+          <TopTracks />
+        </CollectionOverviewLayout.SummaryGroup>
 
-      <CollectionOverviewLayout.Chart>
         <TracksRangeChart />
-      </CollectionOverviewLayout.Chart>
+      </CollectionOverviewLayout.SidePanel>
 
-      <CollectionOverviewLayout.Content>
+      <CollectionOverviewLayout.MainPanel>
         <EntityExplorer
           model={pageModel.trackExplorerModel}
           columns={trackColumns}
@@ -72,7 +72,7 @@ const TracksPage = () => {
           estimateSize={56}
           searchPlaceholder="Search tracks..."
         />
-      </CollectionOverviewLayout.Content>
+      </CollectionOverviewLayout.MainPanel>
     </CollectionOverviewLayout>
   )
 }

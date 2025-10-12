@@ -71,16 +71,16 @@ const AlbumsPage = () => {
 
   return (
     <CollectionOverviewLayout>
-      <CollectionOverviewLayout.Summary>
-        <TotalStatsCard />
-        <TopAlbums />
-      </CollectionOverviewLayout.Summary>
+      <CollectionOverviewLayout.SidePanel>
+        <CollectionOverviewLayout.SummaryGroup>
+          <TotalStatsCard />
+          <TopAlbums />
+        </CollectionOverviewLayout.SummaryGroup>
 
-      <CollectionOverviewLayout.Chart>
         <AlbumsRangeChart />
-      </CollectionOverviewLayout.Chart>
+      </CollectionOverviewLayout.SidePanel>
 
-      <CollectionOverviewLayout.Content>
+      <CollectionOverviewLayout.MainPanel>
         <EntityExplorer
           model={pageModel.albumExplorerModel}
           columns={albumColumns}
@@ -89,7 +89,7 @@ const AlbumsPage = () => {
           estimateSize={56}
           searchPlaceholder="Search albums..."
         />
-      </CollectionOverviewLayout.Content>
+      </CollectionOverviewLayout.MainPanel>
     </CollectionOverviewLayout>
   )
 }

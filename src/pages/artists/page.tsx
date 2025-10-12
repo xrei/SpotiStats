@@ -68,16 +68,16 @@ const ArtistsPage = () => {
 
   return (
     <CollectionOverviewLayout>
-      <CollectionOverviewLayout.Summary>
-        <TotalStatsCard />
-        <TopArtists />
-      </CollectionOverviewLayout.Summary>
+      <CollectionOverviewLayout.SidePanel>
+        <CollectionOverviewLayout.SummaryGroup>
+          <TotalStatsCard />
+          <TopArtists />
+        </CollectionOverviewLayout.SummaryGroup>
 
-      <CollectionOverviewLayout.Chart>
         <ArtistsRangeChart />
-      </CollectionOverviewLayout.Chart>
+      </CollectionOverviewLayout.SidePanel>
 
-      <CollectionOverviewLayout.Content>
+      <CollectionOverviewLayout.MainPanel>
         <EntityExplorer
           model={pageModel.artistExplorerModel}
           columns={artistColumns}
@@ -85,7 +85,7 @@ const ArtistsPage = () => {
           getRowKey={(artist) => artist.id}
           emptyState={<span>No artists found</span>}
         />
-      </CollectionOverviewLayout.Content>
+      </CollectionOverviewLayout.MainPanel>
     </CollectionOverviewLayout>
   )
 }
