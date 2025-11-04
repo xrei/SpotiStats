@@ -1,4 +1,4 @@
-import {For, type Accessor, type JSX, createMemo, createEffect, Show} from 'solid-js'
+import {For, type Accessor, type JSX, createMemo, createEffect} from 'solid-js'
 import {createVirtualizer} from '@tanstack/solid-virtual'
 import clsx from 'clsx'
 

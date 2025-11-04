@@ -51,7 +51,7 @@ export const AlbumListRow = (props: {album: EnrichedAlbum; index: number}) => {
       data-entity-row="true"
       tabIndex={-1}
       role="group"
-      class={`${entityRowBaseClasses} grid grid-cols-[auto_1fr_100px_120px] items-center gap-4`}
+      class={`${entityRowBaseClasses} grid grid-cols-[auto_1fr_100px_120px] items-center gap-4 select-none`}
       style={{height: `${ENTITY_ROW_HEIGHT}px`}}
       onKeyDown={handleRowKeyDown}
       onMouseDown={() => {

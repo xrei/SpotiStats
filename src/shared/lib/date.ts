@@ -79,6 +79,93 @@ const msToH = (ms: number) => {
   return h.toFixed(1)
 }
 
+const startOfWeek = (dayKey: string, weekStartsOn = 1): string => {
+  const date = parseYMD(dayKey)
+  const currentDow = date.getUTCDay()
+  const offset = (currentDow - weekStartsOn + 7) % 7
+  date.setUTCDate(date.getUTCDate() - offset)
+  return fmtYMD(date)
+}
+
+const endOfWeek = (dayKey: string, weekStartsOn = 1): string => {
+  const startKey = startOfWeek(dayKey, weekStartsOn)
+  const date = parseYMD(startKey)
+  date.setUTCDate(date.getUTCDate() + 6)
+  return fmtYMD(date)
+}
+
+const parseMonthKey = (key: string): Date | null => {
+  if (!/^\d{4}-\d{2}$/.test(key)) return null
+  const year = Number(key.slice(0, 4))
+  const month = Number(key.slice(5, 7)) - 1
+  if (!Number.isFinite(year) || !Number.isFinite(month)) return null
+  const date = new Date(Date.UTC(year, month, 1))
+  if (Number.isNaN(date.getTime())) return null
+  return date
+}
+
+type DateStyle = NonNullable<Intl.DateTimeFormatOptions['dateStyle']>
+
+const formatDate = (isoString: string | null, dateStyle: DateStyle = 'short'): string | null => {
+  if (!isoString) return null
+  const date = new Date(isoString)
+  if (Number.isNaN(date.getTime())) return null
+
+  const formatter = new Intl.DateTimeFormat(undefined, {dateStyle})
+  return formatter.format(date)
+}
+
+const formatMonthKey = (
+  key: string,
+  options: Intl.DateTimeFormatOptions = {month: 'long', year: 'numeric'},
+): string => {
+  const date = parseMonthKey(key)
+  if (!date) return key
+  const formatter = new Intl.DateTimeFormat(undefined, options)
+  return formatter.format(date)
+}
+
+type WeekRangeFormatOptions = {
+  start?: Intl.DateTimeFormatOptions
+  end?: Intl.DateTimeFormatOptions
+  sameYearStart?: Intl.DateTimeFormatOptions
+}
+
+const DEFAULT_WEEK_START: Intl.DateTimeFormatOptions = {month: 'short', day: 'numeric'}
+const DEFAULT_WEEK_START_WITH_YEAR: Intl.DateTimeFormatOptions = {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+}
+const DEFAULT_WEEK_END: Intl.DateTimeFormatOptions = {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+}
+
+const formatWeekRange = (
+  startKey: string,
+  endKey: string,
+  options: WeekRangeFormatOptions = {},
+): string => {
+  const startDate = parseYMD(startKey)
+  const endDate = parseYMD(endKey)
+  if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
+    return `${startKey} – ${endKey}`
+  }
+
+  const sameYear = startDate.getUTCFullYear() === endDate.getUTCFullYear()
+  const startOptions = sameYear
+    ? options.sameYearStart ?? options.start ?? DEFAULT_WEEK_START
+    : options.start ?? DEFAULT_WEEK_START_WITH_YEAR
+  const endOptions = options.end ?? DEFAULT_WEEK_END
+
+  const startFormatter = new Intl.DateTimeFormat(undefined, startOptions)
+  const endFormatter = new Intl.DateTimeFormat(undefined, endOptions)
+
+  return `${startFormatter.format(startDate)} – ${endFormatter.format(endDate)}`
+}
+
 export const dateLib = {
   parseYMD,
   fmtYMD,
@@ -92,4 +179,9 @@ export const dateLib = {
   clampDay,
   msToH,
   msToHMS,
+  formatDate,
+  formatMonthKey,
+  formatWeekRange,
+  startOfWeek,
+  endOfWeek,
 }

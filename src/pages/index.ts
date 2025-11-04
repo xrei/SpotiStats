@@ -15,8 +15,8 @@ export const routes: RouteDefinition[] = [
     component: lazy(() => import('./artist/page')),
   },
   {
-    path: '/artists/:artist',
-    component: lazy(() => import('./artist/page')),
+    path: '/artists/:artist/:album',
+    component: lazy(() => import('./album/page')),
   },
   {
     path: '/albums',
