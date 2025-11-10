@@ -1,8 +1,8 @@
-import {combine, createEvent, restore, sample} from 'effector'
+import {createEvent, restore, sample} from 'effector'
 import {createGate} from 'effector-solid'
-import {historyModel, sortTracks, type EnrichedAlbum} from '@/features/Magic'
+import {historyModel, sortTracks, Entities, type EnrichedAlbum} from '@/features/Magic'
+import {createPeakActivityModel} from '@/features/PeakActivity'
 import {dateLib} from '@/shared/lib'
-import {computePeakActivity} from './peakActivity'
 
 export const AlbumPageGate = createGate<{artist: string; album: string}>('AlbumPageGate')
 
@@ -59,8 +59,9 @@ export const $albumStats = $albumData.map<AlbumStats>((album) => {
   }
 })
 
-export const $peakActivity = combine(
-  $albumData,
-  historyModel.$timeIndex,
-  computePeakActivity,
-)
+export const albumPeakActivityModel = createPeakActivityModel(Entities.Album)
+
+sample({
+  clock: albumDataChanged,
+  target: albumPeakActivityModel.entityChanged,
+})

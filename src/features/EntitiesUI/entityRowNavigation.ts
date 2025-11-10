@@ -4,7 +4,7 @@ export const ENTITY_ROW_HEIGHT = 72
 export const ENTITY_ROW_SELECTOR = '[data-entity-row="true"]'
 
 export const entityRowBaseClasses = clsx(
-  'group relative rounded-md px-3 py-3 outline-none focus:outline-none focus-visible:outline-1 focus-visible:outline-accent focus:bg-surface-hover focus-within:bg-surface-hover hover:bg-surface-hover/50 active:bg-surface-hover',
+  'group relative rounded-md pl-1 pr-3 py-2 outline-none focus:outline-none focus-visible:outline-1 focus-visible:outline-accent focus:bg-surface-hover focus-within:bg-surface-hover hover:bg-surface-hover/50 active:bg-surface-hover',
 )
 
 type GetElement = () => HTMLElement | undefined

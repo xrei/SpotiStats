@@ -5,6 +5,7 @@ import {useParams} from '@solidjs/router'
 import * as artistModel from './model'
 import {TracksSection} from './TracksSection'
 import {AlbumSection} from './AlbumSection'
+import {PeakActivityWidget} from '@/features/PeakActivity'
 
 const HEADER_TRIGGER_OFFSET = 64
 
@@ -36,7 +37,7 @@ const HeroSection = (props: {name: string}) => {
   const stats = useUnit(artistModel.$totalStats)
 
   return (
-    <section class="relative z-0 pb-6">
+    <section class="relative z-0 pb-4">
       <div
         class={clsx(
           'absolute inset-0 -z-10',
@@ -44,10 +45,12 @@ const HeroSection = (props: {name: string}) => {
         )}
       />
 
-      <div class="flex min-h-[300px] flex-col justify-end gap-4 px-6 pb-16">
+      <div class="flex min-h-[160px] flex-col justify-end gap-3 px-6 pb-10">
         <div>
-          <h1 class="text-text-strong text-4xl font-bold md:text-5xl">{props.name}</h1>
-          <p class="mt-2 pl-1 text-lg md:mt-4 md:text-xl">
+          <h1 class="text-text-strong text-3xl leading-tight font-bold md:text-5xl">
+            {props.name}
+          </h1>
+          <p class="mt-1 pl-1 text-base md:mt-2 md:text-lg">
             {stats().plays} plays • {stats().hours}
           </p>
         </div>
@@ -140,9 +143,13 @@ const ArtistPage = () => {
               class="h-0 w-full"
             />
 
-            <div class="relative z-10 flex flex-1 flex-col px-6 pt-6 pb-12">
-              <TracksSection tracks={tracks} />
-              <div class="mt-14">
+            <div class="relative z-10 px-6 pt-6 pb-12">
+              <div class="mb-14">
+                <PeakActivityWidget model={artistModel.artistPeakActivityModel} />
+              </div>
+
+              <div class="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1fr]">
+                <TracksSection tracks={tracks} />
                 <AlbumSection albums={albums} />
               </div>
             </div>

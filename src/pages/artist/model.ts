@@ -4,9 +4,11 @@ import {
   historyModel,
   sortAlbumsByPlayCount,
   sortTracks,
+  Entities,
   type EnrichedArtist,
   type EnrichedTrack,
 } from '@/features/Magic'
+import {createPeakActivityModel} from '@/features/PeakActivity'
 import {dateLib} from '@/shared/lib'
 
 export const ArtistPageGate = createGate<{artist: string}>('ArtistPageGate')
@@ -47,6 +49,13 @@ export const $totalStats = $artistData.map((artist) => {
     plays: artist.playsCount.toLocaleString(),
     hours: dateLib.msToHMS(artist.playTimeMs),
   }
+})
+
+export const artistPeakActivityModel = createPeakActivityModel(Entities.Artist)
+
+sample({
+  clock: artistDataChanged,
+  target: artistPeakActivityModel.entityChanged,
 })
 
 sample({

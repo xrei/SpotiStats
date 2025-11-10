@@ -9,8 +9,9 @@ export const TracksSection = (props: {tracks: Accessor<readonly EnrichedTrack[]>
     emptyLabel="No tracks found."
     collapsedLabel="Show more"
     expandedLabel="Show less"
-    maxItems={20}
-    minItemsToToggle={5}
+    collapsedCount={10}
+    expandedCount={10}
+    minItemsToToggle={10}
     renderItem={(track, index) => <TrackListRow track={track} index={index} />}
   />
 )

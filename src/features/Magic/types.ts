@@ -146,3 +146,7 @@ export type TrackListItem = {
   }
   meta: EnrichedTrack['meta']
 }
+
+export type EntityType = 'album' | 'artist' | 'track'
+
+export type Entity = EnrichedAlbum | EnrichedArtist | EnrichedTrack

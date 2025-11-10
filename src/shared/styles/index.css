@@ -31,6 +31,7 @@
 
   /* lines & states */
   --color-line: #372c37;
+  --color-line-subtle: rgba(55, 44, 55, 0.3);
   --color-line-strong: #4a3b4a;
   --color-row-1: #231c26;
   --color-row-2: #261f2a;

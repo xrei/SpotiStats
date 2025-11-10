@@ -81,7 +81,7 @@ export const EntityShowMoreList = <T,>(props: EntityShowMoreListProps<T>) => {
 
   const listClasses = createMemo(() =>
     clsx(
-      'divide-line/30 divide-y',
+      'divide-line-subtle divide-y',
       !expanded() && collapsedClamp() && 'overflow-hidden',
       expandedScrollable() && 'overflow-y-auto pr-2',
       'focus-visible:outline focus-visible:outline-accent focus-visible:outline-offset-2',
