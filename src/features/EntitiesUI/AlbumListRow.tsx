@@ -1,6 +1,6 @@
 import {A} from '@solidjs/router'
 import type {JSX} from 'solid-js'
-import type {EnrichedAlbum} from '@/features/magic'
+import type {EnrichedAlbum} from '@/features/Magic'
 import {
   ENTITY_ROW_HEIGHT,
   createEntityRowNavigation,

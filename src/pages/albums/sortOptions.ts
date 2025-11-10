@@ -1,6 +1,6 @@
-import type {SortOption} from '@/features/filters'
-import {AlbumSort} from '@/features/magic'
-import type {AlbumSort as AlbumSortType} from '@/features/magic'
+import type {SortOption} from '@/features/Filters'
+import {AlbumSort} from '@/features/Magic'
+import type {AlbumSort as AlbumSortType} from '@/features/Magic'
 
 export const AlbumSortOpts: readonly SortOption<AlbumSortType>[] = [
   {label: 'Range Plays', value: AlbumSort.RangePlays},

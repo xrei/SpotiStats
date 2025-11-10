@@ -1,7 +1,7 @@
 import {Show} from 'solid-js'
 import {useUnit} from 'effector-solid'
 import {BaseLineChart} from '@/shared/ui/BaseLineChart'
-import {ChartsModel} from '@/features/magic'
+import {ChartsModel} from '@/features/Magic'
 import * as pageModel from './model'
 
 export const ArtistsRangeChart = () => {

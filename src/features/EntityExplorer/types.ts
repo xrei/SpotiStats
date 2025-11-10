@@ -1,6 +1,6 @@
 import type {Accessor, JSX} from 'solid-js'
 import type {TimeRange} from '@/shared/ui'
-import type {FiltersModel} from '@/features/filters'
+import type {FiltersModel} from '@/features/Filters'
 
 export type ColumnContext<Sort extends string = string> = {
   filtersModel: FiltersModel<Sort>

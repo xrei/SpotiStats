@@ -1,14 +1,14 @@
 import {createStore, sample} from 'effector'
 import {createGate} from 'effector-solid'
-import {createEntityExplorerModel} from '@/features/entityExplorer'
+import {createEntityExplorerModel} from '@/features/EntityExplorer'
 import {
   ChartsModel,
   createSelect,
   historyModel,
   trackView,
   TrackSort,
-} from '@/features/magic'
-import type {TrackChartSeries} from '@/features/magic'
+} from '@/features/Magic'
+import type {TrackChartSeries} from '@/features/Magic'
 import {TrackSortOpts} from './sortOptions'
 
 const {select: selectTracks} = createSelect(trackView)

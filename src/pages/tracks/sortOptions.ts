@@ -1,6 +1,6 @@
-import type {SortOption} from '@/features/filters'
-import {TrackSort} from '@/features/magic'
-import type {TrackSort as TrackSortType} from '@/features/magic'
+import type {SortOption} from '@/features/Filters'
+import {TrackSort} from '@/features/Magic'
+import type {TrackSort as TrackSortType} from '@/features/Magic'
 
 export const TrackSortOpts: readonly SortOption<TrackSortType>[] = [
   {label: 'Range Time', value: TrackSort.RangeMs},

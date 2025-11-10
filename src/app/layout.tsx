@@ -1,7 +1,7 @@
 import {type JSX, Show} from 'solid-js'
 import {A, useLocation} from '@solidjs/router'
 import {useUnit} from 'effector-solid'
-import {historyModel} from '@/features/magic'
+import {historyModel} from '@/features/Magic'
 import clsx from 'clsx'
 import {CogIcon} from '@/shared/ui'
 

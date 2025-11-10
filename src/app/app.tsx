@@ -1,4 +1,4 @@
-import {historyModel} from '@/features/magic'
+import {historyModel} from '@/features/Magic'
 import {routes} from '@/pages'
 import {onMount} from 'solid-js'
 import {Router} from '@solidjs/router'

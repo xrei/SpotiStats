@@ -1,6 +1,6 @@
 import {combine, createEvent, restore, sample} from 'effector'
 import {createGate} from 'effector-solid'
-import {historyModel, sortTracks, type EnrichedAlbum} from '@/features/magic'
+import {historyModel, sortTracks, type EnrichedAlbum} from '@/features/Magic'
 import {dateLib} from '@/shared/lib'
 import {computePeakActivity} from './peakActivity'
 

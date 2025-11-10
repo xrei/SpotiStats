@@ -1,4 +1,4 @@
-import type {EnrichedAlbum} from '@/features/magic'
+import type {EnrichedAlbum} from '@/features/Magic'
 import type {Accessor} from 'solid-js'
 import {AlbumListRow, EntityShowMoreList} from '@/features/EntitiesUI'
 

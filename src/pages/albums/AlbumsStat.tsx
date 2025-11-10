@@ -1,7 +1,7 @@
 import {useUnit} from 'effector-solid'
 import {Show} from 'solid-js'
 import {Card, CardHeader, CardTitle} from '@/shared/ui/Card'
-import {historyModel} from '@/features/magic'
+import {historyModel} from '@/features/Magic'
 import {dateLib} from '@/shared/lib'
 import {Metric} from '@/shared/ui/Metric'
 

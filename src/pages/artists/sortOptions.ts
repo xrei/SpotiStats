@@ -1,6 +1,6 @@
-import type {SortOption} from '@/features/filters'
-import {ArtistSort} from '@/features/magic'
-import type {ArtistSort as ArtistSortType} from '@/features/magic'
+import type {SortOption} from '@/features/Filters'
+import {ArtistSort} from '@/features/Magic'
+import type {ArtistSort as ArtistSortType} from '@/features/Magic'
 
 export const ArtistSortOpts: readonly SortOption<ArtistSortType>[] = [
   {label: 'Range Plays', value: ArtistSort.RangePlays},

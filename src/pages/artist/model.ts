@@ -6,7 +6,7 @@ import {
   sortTracks,
   type EnrichedArtist,
   type EnrichedTrack,
-} from '@/features/magic'
+} from '@/features/Magic'
 import {dateLib} from '@/shared/lib'
 
 export const ArtistPageGate = createGate<{artist: string}>('ArtistPageGate')

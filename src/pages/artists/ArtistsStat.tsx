@@ -2,7 +2,7 @@ import {useUnit} from 'effector-solid'
 import {Show} from 'solid-js'
 import {CardHeader, CardTitle, Card} from '@/shared/ui/Card'
 import {dateLib} from '@/shared/lib'
-import {historyModel} from '@/features/magic'
+import {historyModel} from '@/features/Magic'
 import {Metric} from '@/shared/ui/Metric'
 
 export const TopArtists = () => {

@@ -1,7 +1,7 @@
 import {A, useParams} from '@solidjs/router'
 import {useGate, useUnit} from 'effector-solid'
 import {For, Show, type Accessor} from 'solid-js'
-import type {EnrichedAlbum, EnrichedTrack} from '@/features/magic'
+import type {EnrichedAlbum, EnrichedTrack} from '@/features/Magic'
 import {TrackListRow} from '@/features/EntitiesUI'
 import {createEntityListNavigation} from '@/features/EntitiesUI/entityRowNavigation'
 import {dateLib} from '@/shared/lib'

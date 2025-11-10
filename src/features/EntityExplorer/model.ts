@@ -1,9 +1,9 @@
 import {combine, createStore, sample} from 'effector'
 import type {Store} from 'effector'
 import type {Gate} from 'effector-solid'
-import {createFiltersModel, type FiltersModel, type FiltersModelConfig} from '@/features/filters'
-import type {TimeIndex} from '@/features/magic'
-import type {SelectContext} from '@/features/magic/select'
+import {createFiltersModel, type FiltersModel, type FiltersModelConfig} from '@/features/Filters'
+import type {TimeIndex} from '@/features/Magic'
+import type {SelectContext} from '@/features/Magic/select'
 
 export type EntityExplorerModelConfig<
   Sort extends string = string,

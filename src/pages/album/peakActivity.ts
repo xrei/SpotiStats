@@ -1,4 +1,4 @@
-import type {EnrichedAlbum, TimeIndex} from '@/features/magic'
+import type {EnrichedAlbum, TimeIndex} from '@/features/Magic'
 import {dateLib} from '@/shared/lib'
 
 export type PeakActivity = {

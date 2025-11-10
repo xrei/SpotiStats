@@ -1,12 +1,12 @@
 import {useGate} from 'effector-solid'
 import {dateLib} from '@/shared/lib'
-import {type AlbumListItem, type AlbumSort} from '@/features/magic'
+import {type AlbumListItem, type AlbumSort} from '@/features/Magic'
 import {
   EntityExplorer,
   type ColumnContext,
   type EntityExplorerColumn,
-} from '@/features/entityExplorer'
-import {TotalStatsCard} from '@/features/magic'
+} from '@/features/EntityExplorer'
+import {TotalStatsCard} from '@/features/Magic'
 import {CollectionOverviewLayout} from '@/shared/ui'
 import {TopAlbums} from './AlbumsStat'
 import {AlbumsRangeChart} from './AlbumsRangeChart'

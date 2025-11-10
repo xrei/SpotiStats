@@ -1,4 +1,4 @@
-import type {EnrichedTrack} from '@/features/magic'
+import type {EnrichedTrack} from '@/features/Magic'
 import type {Accessor} from 'solid-js'
 import {EntityShowMoreList, TrackListRow} from '@/features/EntitiesUI'
 
