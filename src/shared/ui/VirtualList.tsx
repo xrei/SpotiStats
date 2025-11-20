@@ -15,14 +15,16 @@ type VirtualListProps<T> = {
 
 export const VirtualList = <T,>(props: VirtualListProps<T>) => {
   const src: Accessor<T[]> =
-    typeof props.items === 'function' ? (props.items as Accessor<T[]>) : () => props.items as T[]
+    typeof props.items === 'function'
+      ? (props.items as Accessor<T[]>)
+      : () => props.items as T[]
 
   let scrollRef!: HTMLDivElement
 
   const estimate = (i: number) =>
     typeof props.estimateSize === 'function'
       ? (props.estimateSize as (i: number, it: T) => number)(i, src()[i])
-      : props.estimateSize ?? 44
+      : (props.estimateSize ?? 44)
 
   const getKey = props.getItemKey ?? ((_: T, i: number) => i)
   const count = createMemo(() => src().length)
@@ -60,18 +62,21 @@ export const VirtualList = <T,>(props: VirtualListProps<T>) => {
     <div
       ref={scrollRef}
       class={clsx(
-        'h-full overflow-y-auto will-change-transform no-scroll bg-surface-1/50',
+        'no-scroll bg-surface-1/50 h-full overflow-y-auto will-change-transform',
         props.class,
       )}
       style={props.style}
     >
-      <div class={clsx('relative w-full', props.innerClass)} style={{height: `${totalSize()}px`}}>
+      <div
+        class={clsx('relative w-full', props.innerClass)}
+        style={{height: `${totalSize()}px`}}
+      >
         <For each={virtualItems()}>
           {(v) => (
             <div
               ref={(el) => rowVirtualizer.measureElement(el)}
               data-index={v.index}
-              class={clsx('absolute left-0 right-0')}
+              class={clsx('absolute right-0 left-0')}
               style={{
                 transform: `translateY(${v.start}px)`,
               }}

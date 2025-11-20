@@ -22,7 +22,13 @@ export const Metric = ((p: RootProps) => (
 )) as MetricComponent
 
 Metric.Label = (p: Slot) => (
-  <span class={clsx('text-text-muted font-semibold', 'text-[clamp(0.8rem,2cqi,1.5rem)]', p.class)}>
+  <span
+    class={clsx(
+      'text-text-muted font-semibold',
+      'text-[clamp(0.8rem,2cqi,1.5rem)]',
+      p.class,
+    )}
+  >
     {p.children}
   </span>
 )
@@ -42,7 +48,9 @@ Metric.Title = (p: TitleProps) => (
 
 Metric.Value = (p: ValueProps) => {
   const fluid =
-    p.size === 'hero' ? 'text-[clamp(1.25rem,12cqi,2rem)]' : 'text-[clamp(1rem,1.4vw,2rem)]'
+    p.size === 'hero'
+      ? 'text-[clamp(1.25rem,12cqi,2rem)]'
+      : 'text-[clamp(1rem,1.4vw,2rem)]'
 
   return (
     <div

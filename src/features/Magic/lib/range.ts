@@ -41,7 +41,11 @@ export const getRange = (
   }
 }
 
-export const buildKeys = (granularity: Granularity, fromDay: string, toDay: string): string[] =>
+export const buildKeys = (
+  granularity: Granularity,
+  fromDay: string,
+  toDay: string,
+): string[] =>
   granularity === 'day'
     ? dateLib.buildDayKeys(fromDay, toDay)
     : dateLib.buildMonthKeys(dateLib.ym(fromDay), dateLib.ym(toDay))

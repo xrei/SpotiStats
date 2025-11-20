@@ -28,7 +28,8 @@ export const createFiltersModel = <Sort extends string>(
 ) => {
   const sortOptions = config.sortOptions
   const defaultSort = config.defaultSort ?? sortOptions[0]?.value
-  if (!defaultSort) throw new Error('createFiltersModel requires at least one sort option')
+  if (!defaultSort)
+    throw new Error('createFiltersModel requires at least one sort option')
 
   // --- Search
   const $search = createStore(config.defaultSearch ?? '')
@@ -95,4 +96,6 @@ export const createFiltersModel = <Sort extends string>(
   }
 }
 
-export type FiltersModel<Sort extends string> = ReturnType<typeof createFiltersModel<Sort>>
+export type FiltersModel<Sort extends string> = ReturnType<
+  typeof createFiltersModel<Sort>
+>

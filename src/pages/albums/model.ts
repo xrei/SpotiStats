@@ -1,7 +1,13 @@
 import {createEvent, createStore, sample} from 'effector'
 import {createGate} from 'effector-solid'
 import {createEntityExplorerModel} from '@/features/EntityExplorer'
-import {AlbumSort, albumView, ChartsModel, createSelect, historyModel} from '@/features/Magic'
+import {
+  AlbumSort,
+  albumView,
+  ChartsModel,
+  createSelect,
+  historyModel,
+} from '@/features/Magic'
 import type {AlbumChartMetric, AlbumChartSeries} from '@/features/Magic'
 import {AlbumSortOpts} from './sortOptions'
 

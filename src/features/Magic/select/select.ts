@@ -35,7 +35,12 @@ export type SelectContext<Data> = {
 
 export type SelectSchema<Data, Row> = {
   from: (ix: TimeIndex, granularity: Granularity) => Map<string, Map<string, CountAgg>>
-  project: (id: string, data: Data, agg: MergedAgg, granularity: Granularity) => Row | null
+  project: (
+    id: string,
+    data: Data,
+    agg: MergedAgg,
+    granularity: Granularity,
+  ) => Row | null
   whereText?: (row: Row) => string
   order?: (rows: Row[], order: OrderBy) => void
 }

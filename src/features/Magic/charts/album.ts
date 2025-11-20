@@ -36,7 +36,8 @@ export const buildAlbumChartSeries = (
 
   const points: XYPoint[] = keys.map((key) => {
     const bucket = buckets.get(key)
-    if (metric === 'albums') return {x: keyToTs(granularity, key), y: bucket ? bucket.size : 0}
+    if (metric === 'albums')
+      return {x: keyToTs(granularity, key), y: bucket ? bucket.size : 0}
 
     let total = 0
     if (bucket) {

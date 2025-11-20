@@ -32,7 +32,8 @@ const addYears = (d: Date, n: number): Date => {
   return x
 }
 
-const diffDays = (a: Date, b: Date): number => Math.floor((b.getTime() - a.getTime()) / 86_400_000)
+const diffDays = (a: Date, b: Date): number =>
+  Math.floor((b.getTime() - a.getTime()) / 86_400_000)
 
 const ym = (day: string) => day.slice(0, 7)
 
@@ -64,7 +65,8 @@ const buildMonthKeys = (fromYM: string, toYM: string): string[] => {
   return out
 }
 
-const clampDay = (d: string, min: string, max: string) => (d < min ? min : d > max ? max : d)
+const clampDay = (d: string, min: string, max: string) =>
+  d < min ? min : d > max ? max : d
 
 const msToHMS = (ms: number) => {
   const s = Math.floor(ms / 1000)
@@ -106,7 +108,10 @@ const parseMonthKey = (key: string): Date | null => {
 
 type DateStyle = NonNullable<Intl.DateTimeFormatOptions['dateStyle']>
 
-const formatDate = (isoString: string | null, dateStyle: DateStyle = 'short'): string | null => {
+const formatDate = (
+  isoString: string | null,
+  dateStyle: DateStyle = 'short',
+): string | null => {
   if (!isoString) return null
   const date = new Date(isoString)
   if (Number.isNaN(date.getTime())) return null
@@ -156,8 +161,8 @@ const formatWeekRange = (
 
   const sameYear = startDate.getUTCFullYear() === endDate.getUTCFullYear()
   const startOptions = sameYear
-    ? options.sameYearStart ?? options.start ?? DEFAULT_WEEK_START
-    : options.start ?? DEFAULT_WEEK_START_WITH_YEAR
+    ? (options.sameYearStart ?? options.start ?? DEFAULT_WEEK_START)
+    : (options.start ?? DEFAULT_WEEK_START_WITH_YEAR)
   const endOptions = options.end ?? DEFAULT_WEEK_END
 
   const startFormatter = new Intl.DateTimeFormat(undefined, startOptions)

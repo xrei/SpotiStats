@@ -52,19 +52,19 @@ export const SearchInput = (props: SearchInputProps) => {
   const hint = () => (navigator.platform.includes('Mac') ? '⌘ K' : 'Ctrl K')
 
   return (
-    <div class="h-10 border-b border-b-line hover:rounded-sm focus-within:rounded-sm">
+    <div class="border-b-line h-10 border-b focus-within:rounded-sm hover:rounded-sm">
       <div
         role="search"
         class={clsx(
           'relative',
-          'inline-flex w-full h-full items-center',
-          'rounded-sm focus-within:bg-surface-1',
-          'transition-colors hover:bg-surface-hover',
-          'focus-within:outline outline-focus-ring',
+          'inline-flex h-full w-full items-center',
+          'focus-within:bg-surface-1 rounded-sm',
+          'hover:bg-surface-hover transition-colors',
+          'outline-focus-ring focus-within:outline',
           props.class,
         )}
       >
-        <SearchIcon class="pointer-events-none absolute left-3 size-5 text-text-muted" />
+        <SearchIcon class="text-text-muted pointer-events-none absolute left-3 size-5" />
 
         <input
           ref={inputRef}
@@ -72,7 +72,7 @@ export const SearchInput = (props: SearchInputProps) => {
           inputMode="search"
           aria-label={props.ariaLabel ?? 'Search'}
           placeholder={props.placeholder ?? 'Search artists...'}
-          class="h-full w-full rounded-2xl bg-transparent pl-10 pr-10 text-text placeholder:text-text-muted outline-none"
+          class="text-text placeholder:text-text-muted h-full w-full rounded-2xl bg-transparent pr-10 pl-10 outline-none"
           value={get()}
           onInput={(e) => set((e.currentTarget as HTMLInputElement).value)}
           onKeyDown={onKeyDown}
@@ -85,7 +85,7 @@ export const SearchInput = (props: SearchInputProps) => {
             type="button"
             onClick={clear}
             aria-label="Clear search"
-            class="absolute right-2 grid size-7 place-items-center rounded-md text-text-muted hover:text-text-strong transition-colors"
+            class="text-text-muted hover:text-text-strong absolute right-2 grid size-7 place-items-center rounded-md transition-colors"
           >
             <XIcon class="size-5" />
           </button>
@@ -93,7 +93,7 @@ export const SearchInput = (props: SearchInputProps) => {
 
         {props.shortcutHint && !get() && (
           <span
-            class="pointer-events-none absolute right-2 select-none rounded-md px-2 py-0.5 text-base text-text-dim bg-surface"
+            class="text-text-dim bg-surface pointer-events-none absolute right-2 rounded-md px-2 py-0.5 text-base select-none"
             aria-hidden="true"
           >
             {hint()}
@@ -106,7 +106,12 @@ export const SearchInput = (props: SearchInputProps) => {
 
 const SearchIcon = (p: {class?: string}) => (
   <svg viewBox="0 0 24 24" fill="none" class={p.class}>
-    <path d="M21 21l-4.2-4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    <path
+      d="M21 21l-4.2-4.2"
+      stroke="currentColor"
+      stroke-width="1.6"
+      stroke-linecap="round"
+    />
     <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.6" />
   </svg>
 )

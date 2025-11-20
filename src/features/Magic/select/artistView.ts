@@ -12,7 +12,8 @@ export const ArtistSort = {
 export type ArtistSort = (typeof ArtistSort)[keyof typeof ArtistSort]
 
 export const artistView: SelectSchema<ArtistTree, ArtistListItem> = {
-  from: (ix, granularity) => (granularity === 'day' ? ix.artistsByDay : ix.artistsByMonth),
+  from: (ix, granularity) =>
+    granularity === 'day' ? ix.artistsByDay : ix.artistsByMonth,
 
   project: (id, dt, agg, granularity): ArtistListItem | null => {
     const a = dt[id]
@@ -43,7 +44,10 @@ export const artistView: SelectSchema<ArtistTree, ArtistListItem> = {
   order: (rs, {order, by}) => {
     const key = (by as ArtistSort) ?? ArtistSort.RangeMs
 
-    const comparators: Record<ArtistSort, (a: ArtistListItem, b: ArtistListItem) => number> = {
+    const comparators: Record<
+      ArtistSort,
+      (a: ArtistListItem, b: ArtistListItem) => number
+    > = {
       [ArtistSort.RangeMs]: numberDesc((row) => row.range?.ms),
       [ArtistSort.RangePlays]: numberDesc((row) => row.range?.plays),
       [ArtistSort.LifetimeMs]: numberDesc((row) => row.lifetime?.ms),

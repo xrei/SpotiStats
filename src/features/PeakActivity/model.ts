@@ -6,7 +6,9 @@ import {detectOutlierPeaks} from './lib/strategies'
 
 export const createPeakActivityModel = (entityType: EntityType) => {
   const entityChanged = createEvent<Entity | null>('entity changed')
-  const $currentEntity = createStore<Entity | null>(null, {name: `${entityType} peak entity`})
+  const $currentEntity = createStore<Entity | null>(null, {
+    name: `${entityType} peak entity`,
+  })
 
   $currentEntity.on(entityChanged, (_, entity) => entity)
 

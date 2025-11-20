@@ -2,7 +2,13 @@ import {createEvent, createStore, sample} from 'effector'
 import {createGate} from 'effector-solid'
 import {createEntityExplorerModel} from '@/features/EntityExplorer'
 import {ArtistSortOpts} from './sortOptions'
-import {ArtistSort, artistView, ChartsModel, createSelect, historyModel} from '@/features/Magic'
+import {
+  ArtistSort,
+  artistView,
+  ChartsModel,
+  createSelect,
+  historyModel,
+} from '@/features/Magic'
 import type {ArtistChartMetric, ArtistChartSeries} from '@/features/Magic'
 
 const {select: selectArtists} = createSelect(artistView)

@@ -5,7 +5,7 @@ const MainPage = () => {
 
   n('/artists', {replace: true})
 
-  return <div class="flex flex-col h-full"></div>
+  return <div class="flex h-full flex-col"></div>
 }
 
 export default MainPage

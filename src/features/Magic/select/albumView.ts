@@ -46,17 +46,20 @@ export const albumView: SelectSchema<AlbumTree, AlbumListItem> = {
     const sortKey = (by as AlbumSort) ?? AlbumSort.RangeMs
     const key = (row: AlbumListItem) => `${row.artistName}::${row.name}`
 
-    const comparators: Record<AlbumSort, (a: AlbumListItem, b: AlbumListItem) => number> = {
-      [AlbumSort.RangeMs]: numberDesc((row) => row.range?.ms),
-      [AlbumSort.RangePlays]: numberDesc((row) => row.range?.plays),
-      [AlbumSort.LifetimeMs]: numberDesc((row) => row.lifetime?.ms),
-      [AlbumSort.LifetimeTracks]: numberDesc((row) => row.lifetime?.uniqueTracks),
-      [AlbumSort.Name]: stringAsc(key),
-    }
+    const comparators: Record<AlbumSort, (a: AlbumListItem, b: AlbumListItem) => number> =
+      {
+        [AlbumSort.RangeMs]: numberDesc((row) => row.range?.ms),
+        [AlbumSort.RangePlays]: numberDesc((row) => row.range?.plays),
+        [AlbumSort.LifetimeMs]: numberDesc((row) => row.lifetime?.ms),
+        [AlbumSort.LifetimeTracks]: numberDesc((row) => row.lifetime?.uniqueTracks),
+        [AlbumSort.Name]: stringAsc(key),
+      }
 
     const primary = comparators[sortKey]
     const fallback = stringAsc(key)
 
-    rows.sort(composeComparators([applyOrder(primary, order), applyOrder(fallback, order)]))
+    rows.sort(
+      composeComparators([applyOrder(primary, order), applyOrder(fallback, order)]),
+    )
   },
 } as const

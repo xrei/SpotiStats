@@ -54,7 +54,12 @@ export type DayKey = string
 /** 'YYYY-MM' */
 export type MonthKey = string
 export type CountAgg = {ms: number; plays: number}
-export type MergedAgg = {ms: number; plays: number; firstKey: string | null; lastKey: string | null}
+export type MergedAgg = {
+  ms: number
+  plays: number
+  firstKey: string | null
+  lastKey: string | null
+}
 
 export type Granularity = 'day' | 'month'
 

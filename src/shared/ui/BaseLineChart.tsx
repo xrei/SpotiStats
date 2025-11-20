@@ -48,7 +48,11 @@ export const BaseLineChart = (p: Props): JSX.Element => {
           rotate: 0,
           datetimeUTC: false,
           datetimeFormatter: {year: 'yyyy', month: 'MMM yy', day: 'dd MMM'},
-          style: {fontFamily: 'inherit', fontSize: '11px', colors: 'var(--color-text-dim)'},
+          style: {
+            fontFamily: 'inherit',
+            fontSize: '11px',
+            colors: 'var(--color-text-dim)',
+          },
         },
         axisTicks: {show: false},
         axisBorder: {show: false},

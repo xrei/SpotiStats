@@ -162,7 +162,7 @@ const ColumnHeaders = <Item, Sort extends string = string>(
     class="bg-surface-1 text-text-dim grid items-end gap-2 px-2 py-1 text-center text-[10px] md:gap-4 md:px-0 md:pr-6 md:pl-4"
     style={{'grid-template-columns': props.gridTemplate()}}
   >
-    <div class="min-w-0 text-left text-sm text-text-dim">
+    <div class="text-text-dim min-w-0 text-left text-sm">
       {props.renderCount(props.count())}
     </div>
     <For each={props.columns().slice(1)}>
@@ -261,7 +261,7 @@ const PanelRow = <Item, Sort extends string = string>(
           return (
             <div
               class={clsx(
-                'min-w-0 py-2 text-sm tabular-nums text-text',
+                'text-text min-w-0 py-2 text-sm tabular-nums',
                 align,
                 col.cellClass,
               )}

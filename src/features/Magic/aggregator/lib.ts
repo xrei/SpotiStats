@@ -30,7 +30,11 @@ export const createTrack = (id: string, e: StreamingEntry): EnrichedTrack => ({
   },
 })
 
-export const createAlbum = (id: string, name: string, artistName: string): EnrichedAlbum => ({
+export const createAlbum = (
+  id: string,
+  name: string,
+  artistName: string,
+): EnrichedAlbum => ({
   id,
   name,
   artistName,
@@ -138,7 +142,8 @@ export const addToIndex = (
   }
 }
 
-export const albumKeyOf = (artistName: string, albumName: string) => `${artistName}::${albumName}`
+export const albumKeyOf = (artistName: string, albumName: string) =>
+  `${artistName}::${albumName}`
 
 export const getEntryKind = (entry: StreamingEntry) => {
   const isTrack = !!entry.spotify_track_uri || !!entry.master_metadata_track_name
@@ -178,7 +183,14 @@ export function summariseEntities(
   }
 
   return {
-    top: {artistByPlays, artistByTime, albumByPlays, albumByTime, trackByPlays, trackByTime},
+    top: {
+      artistByPlays,
+      artistByTime,
+      albumByPlays,
+      albumByTime,
+      trackByPlays,
+      trackByTime,
+    },
     totalArtists: Object.keys(tree).length,
     totalAlbums,
     totalPlayedTimeMs,
@@ -186,7 +198,10 @@ export function summariseEntities(
   }
 }
 
-const topByPlays = <T extends {playsCount: number}>(curr: T | null, item: T): T | null => {
+const topByPlays = <T extends {playsCount: number}>(
+  curr: T | null,
+  item: T,
+): T | null => {
   if (!curr || item.playsCount > curr.playsCount) return item
   return curr
 }

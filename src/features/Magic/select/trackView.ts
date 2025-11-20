@@ -48,17 +48,20 @@ export const trackView: SelectSchema<Map<string, EnrichedTrack>, TrackListItem> 
     const key = (row: TrackListItem) =>
       `${row.artistName ?? ''}::${row.albumName ?? ''}::${row.name ?? ''}`
 
-    const comparators: Record<TrackSort, (a: TrackListItem, b: TrackListItem) => number> = {
-      [TrackSort.RangeMs]: numberDesc((row) => row.range?.ms),
-      [TrackSort.RangePlays]: numberDesc((row) => row.range?.plays),
-      [TrackSort.LifetimeMs]: numberDesc((row) => row.lifetime?.ms),
-      [TrackSort.LifetimePlays]: numberDesc((row) => row.lifetime?.plays),
-      [TrackSort.Name]: stringAsc(key),
-    }
+    const comparators: Record<TrackSort, (a: TrackListItem, b: TrackListItem) => number> =
+      {
+        [TrackSort.RangeMs]: numberDesc((row) => row.range?.ms),
+        [TrackSort.RangePlays]: numberDesc((row) => row.range?.plays),
+        [TrackSort.LifetimeMs]: numberDesc((row) => row.lifetime?.ms),
+        [TrackSort.LifetimePlays]: numberDesc((row) => row.lifetime?.plays),
+        [TrackSort.Name]: stringAsc(key),
+      }
 
     const primary = comparators[sortKey]
     const fallback = stringAsc(key)
 
-    rows.sort(composeComparators([applyOrder(primary, order), applyOrder(fallback, order)]))
+    rows.sort(
+      composeComparators([applyOrder(primary, order), applyOrder(fallback, order)]),
+    )
   },
 } as const

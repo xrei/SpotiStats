@@ -1,7 +1,11 @@
 import {combine, createStore, sample} from 'effector'
 import type {Store} from 'effector'
 import type {Gate} from 'effector-solid'
-import {createFiltersModel, type FiltersModel, type FiltersModelConfig} from '@/features/Filters'
+import {
+  createFiltersModel,
+  type FiltersModel,
+  type FiltersModelConfig,
+} from '@/features/Filters'
 import type {TimeIndex} from '@/features/Magic'
 import type {SelectContext} from '@/features/Magic/select'
 

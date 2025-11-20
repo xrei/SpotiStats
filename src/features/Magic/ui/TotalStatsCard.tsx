@@ -6,7 +6,8 @@ import {historyModel} from '../model'
 
 export const TotalStatsCard = () => {
   const info = useUnit(historyModel.$artistsInfo)
-  const totalDays = () => Math.round(info().totalPlayedTimeMs / 86_400_000).toLocaleString()
+  const totalDays = () =>
+    Math.round(info().totalPlayedTimeMs / 86_400_000).toLocaleString()
   const totalArtists = () => info().totalArtists.toLocaleString()
   const totalAlbums = () => info().totalAlbums.toLocaleString()
   const totalTracks = () => info().uniqueTracksCount.toLocaleString()
@@ -16,7 +17,7 @@ export const TotalStatsCard = () => {
       <CardHeader>
         <CardTitle>Overall</CardTitle>
       </CardHeader>
-      <div class="grid gap-4 [grid-template-columns:repeat(3,minmax(0,1fr))]">
+      <div class="grid grid-cols-3 gap-4">
         <Metric class="col-span-2">
           <Metric.Label>Total Play Time</Metric.Label>
           <Metric.Value class="animated-gradient-text" size="hero">

@@ -31,8 +31,8 @@ const FixedRangeToggle = (props: {
             type="button"
             onClick={() => set(o)}
             class={clsx(
-              'px-3 py-1.5 text-sm cursor-pointer',
-              'focus:outline outline-focus-ring rounded-lg transition-colors  hover:bg-surface-hover',
+              'cursor-pointer px-3 py-1.5 text-sm',
+              'outline-focus-ring hover:bg-surface-hover rounded-lg transition-colors focus:outline',
               active ? 'text-accent bg-surface-1' : 'text-text hover:text-text-strong',
             )}
           >
@@ -77,7 +77,7 @@ const DateRangePicker = (props: {
 
   return (
     <div
-      class={`flex items-center gap-2 rounded-lg bg-surface-1 px-2 py-1.5 text-sm text-text ${
+      class={`bg-surface-1 text-text flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm ${
         props.class ?? ''
       }`}
     >
@@ -87,10 +87,10 @@ const DateRangePicker = (props: {
         max={val()?.to || max}
         value={val()?.from || ''}
         onInput={(e) => update({from: (e.currentTarget as HTMLInputElement).value})}
-        class="bg-transparent outline-none border-0 text-text [color-scheme:dark]"
+        class="text-text border-0 bg-transparent [color-scheme:dark] outline-none"
       />
 
-      <span class="px-1 text-text-muted">—</span>
+      <span class="text-text-muted px-1">—</span>
 
       <input
         type="date"
@@ -98,13 +98,13 @@ const DateRangePicker = (props: {
         max={max}
         value={val()?.to || ''}
         onInput={(e) => update({to: (e.currentTarget as HTMLInputElement).value})}
-        class="bg-transparent outline-none border-0 text-text [color-scheme:dark]"
+        class="text-text border-0 bg-transparent [color-scheme:dark] outline-none"
       />
 
       <button
         type="button"
         onClick={clear}
-        class="grid size-6 place-items-center rounded text-text-muted hover:text-text-strong"
+        class="text-text-muted hover:text-text-strong grid size-6 place-items-center rounded"
       >
         <XIcon class="size-4" />
       </button>
@@ -147,7 +147,7 @@ export const TimeRangeControl = (props: TimeRangeControlProps) => {
   }
 
   return (
-    <div class={clsx(`inline-flex items-center`, 'border-b border-b-line', props.class)}>
+    <div class={clsx(`inline-flex items-center`, 'border-b-line border-b', props.class)}>
       {!showRange() && (
         <>
           <FixedRangeToggle
@@ -160,10 +160,10 @@ export const TimeRangeControl = (props: TimeRangeControlProps) => {
           <button
             type="button"
             onClick={() => setShowRange(true)}
-            class="rounded-lg px-3 py-1.5 text-sm text-text hover:bg-surface-hover focus:outline outline-focus-ring"
+            class="text-text hover:bg-surface-hover outline-focus-ring rounded-lg px-3 py-1.5 text-sm focus:outline"
             aria-label="Pick date range"
           >
-            <CalendarIcon class="size-5 text-text-muted" />
+            <CalendarIcon class="text-text-muted size-5" />
           </button>
         </>
       )}

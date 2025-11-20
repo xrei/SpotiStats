@@ -12,5 +12,7 @@ export const CardHeader = (p: {class?: string; children: JSX.Element}) => (
 )
 
 export const CardTitle = (p: {class?: string; children: JSX.Element}) => (
-  <h2 class={clsx('text-text-strong text-xl font-semibold lg:text-2xl', p.class)}>{p.children}</h2>
+  <h2 class={clsx('text-text-strong text-xl font-semibold lg:text-2xl', p.class)}>
+    {p.children}
+  </h2>
 )

@@ -20,7 +20,9 @@ export const TopTracks = () => {
         <div class="grid [grid-template-columns:repeat(2,minmax(0,1fr))] gap-4">
           <Metric>
             <Metric.Label>By Total Time</Metric.Label>
-            <Metric.Title title={topByTime()!.trackName!}>{topByTime()!.trackName}</Metric.Title>
+            <Metric.Title title={topByTime()!.trackName!}>
+              {topByTime()!.trackName}
+            </Metric.Title>
             <Metric.Sub class="animated-gradient-text">
               {dateLib.msToHMS(topByTime()!.totalMs)}
             </Metric.Sub>
@@ -28,7 +30,9 @@ export const TopTracks = () => {
 
           <Metric>
             <Metric.Label>By Total Plays</Metric.Label>
-            <Metric.Title title={topByPlays()!.trackName!}>{topByPlays()!.trackName}</Metric.Title>
+            <Metric.Title title={topByPlays()!.trackName!}>
+              {topByPlays()!.trackName}
+            </Metric.Title>
             <Metric.Sub class="animated-gradient-text">
               {topByPlays()!.playsCount.toLocaleString()} plays
             </Metric.Sub>

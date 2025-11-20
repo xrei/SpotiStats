@@ -64,11 +64,17 @@ function SortFilterBase<T extends string>(props: SortFilterBaseProps<T>): JSX.El
   )
 }
 
-export type SortFilterProps<T extends string> = Pick<SortFilterBaseProps<T>, 'items' | 'class'> & {
+export type SortFilterProps<T extends string> = Pick<
+  SortFilterBaseProps<T>,
+  'items' | 'class'
+> & {
   model: FiltersModel<T>
 }
 
-export function SortFilter<T extends string>({model, ...p}: SortFilterProps<T>): JSX.Element {
+export function SortFilter<T extends string>({
+  model,
+  ...p
+}: SortFilterProps<T>): JSX.Element {
   const {$order, $sortBy, orderChanged, sortByChanged} = useUnit(model.Sort)
 
   return (
