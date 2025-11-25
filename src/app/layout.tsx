@@ -1,20 +1,25 @@
 import {type JSX, Show} from 'solid-js'
-import {A, useLocation} from '@solidjs/router'
+import {A, useLocation, useNavigate} from '@solidjs/router'
 import {useUnit} from 'effector-solid'
 import {historyModel} from '@/features/Magic'
+import {clearData} from '@/features/Magic/dataLoader'
 import clsx from 'clsx'
 import {CogIcon} from '@/shared/ui'
 
 export const AppLayout = (props: {children?: JSX.Element}) => {
   const artistsInfo = useUnit(historyModel.$artistsInfo)
+  const loc = useLocation()
+  const isMainPage = () => loc.pathname === '/'
 
   return (
     <div class="bg-bg-page flex h-dvh min-h-dvh flex-col overflow-hidden">
-      <Header />
+      <Show when={!isMainPage()}>
+        <Header />
+      </Show>
       <main class="no-scroll flex min-h-0 flex-1 flex-col">
         {/* px-4 py-4 md:px-5 xl:px-10 */}
         <Show
-          when={artistsInfo().totalArtists > 0}
+          when={artistsInfo().totalArtists > 0 || isMainPage()}
           fallback={
             <div class="flex flex-1 items-center justify-center text-3xl">Loading...</div>
           }
@@ -33,7 +38,15 @@ export const AppLayout = (props: {children?: JSX.Element}) => {
 
 const Header = () => {
   const loc = useLocation()
+  const navigate = useNavigate()
   const isActive = (path: string) => loc.pathname.startsWith(path)
+
+  const handleClearData = () => {
+    if (confirm('Clear all uploaded data? You will need to re-upload your files.')) {
+      clearData()
+      navigate('/', {replace: true})
+    }
+  }
 
   return (
     <header class="bg-bg-shell shadow-bg-shell/50 flex items-center gap-6 overflow-hidden px-5 py-3 shadow-lg md:overflow-auto">
@@ -55,7 +68,16 @@ const Header = () => {
 
       <button
         type="button"
-        class="text-text-muted hover:bg-surface-hover focus-ring ml-auto rounded-md p-2"
+        onClick={handleClearData}
+        class="text-text-muted hover:bg-surface-hover focus-ring ml-auto rounded-md px-3 py-1.5 text-sm transition-colors"
+        title="Clear uploaded data"
+      >
+        Clear Data
+      </button>
+
+      <button
+        type="button"
+        class="text-text-muted hover:bg-surface-hover focus-ring rounded-md p-2"
         aria-label="Settings"
       >
         <CogIcon class="size-5" />

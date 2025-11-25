@@ -1,9 +1,12 @@
-import {createEffect, createStore, sample} from 'effector'
+import {createEffect, createStore, createEvent, sample} from 'effector'
 import {loadData} from './data'
 import type {StreamingEntry} from './data/entry'
 import {aggregateStreamingHistory, type HistoryData} from './aggregator'
+import {loadPersistedDataFx, uploadFilesFx, $hasPersistedData} from './dataLoader'
 
 const $rawData = createStore<StreamingEntry[][]>([])
+
+const clearRawData = createEvent<void>('clear raw data')
 
 const loadDataFx = createEffect(async () => {
   const data = await loadData()
@@ -12,6 +15,24 @@ const loadDataFx = createEffect(async () => {
 
 sample({
   clock: loadDataFx.doneData,
+  target: $rawData,
+})
+
+sample({
+  clock: loadPersistedDataFx.doneData,
+  filter: (data: StreamingEntry[][]) => data.length > 0,
+  target: $rawData,
+})
+
+sample({
+  clock: uploadFilesFx.doneData,
+  fn: (result) => [result.entries],
+  target: $rawData,
+})
+
+sample({
+  clock: clearRawData,
+  fn: () => [],
   target: $rawData,
 })
 
@@ -52,8 +73,14 @@ const $tracksMap = $history.map((h) => h.byTrack)
 
 sample({
   clock: $rawData,
+  filter: (data) => data.length > 0,
   fn: (data) => aggregateStreamingHistory(data),
   target: $history,
+})
+
+sample({
+  clock: $history,
+  target: clearRawData,
 })
 
 const $artistsInfo = $history.map((h) => h.summary)
@@ -66,4 +93,6 @@ export const historyModel = {
   $artistsTree,
   $albumsTree,
   $tracksMap,
+  $rawData,
+  $hasPersistedData,
 }

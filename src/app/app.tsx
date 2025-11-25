@@ -1,12 +1,22 @@
-import {historyModel} from '@/features/Magic'
 import {routes} from '@/pages'
-import {onMount} from 'solid-js'
 import {Router} from '@solidjs/router'
 import {AppLayout} from './layout'
+import {onMount} from 'solid-js'
+import {
+  checkPersistedDataFx,
+  loadPersistedDataFx,
+} from '@/features/Magic/dataLoader'
+import {sample} from 'effector'
+
+sample({
+  clock: checkPersistedDataFx.doneData,
+  filter: (hasData) => hasData,
+  target: loadPersistedDataFx,
+})
 
 export const App = () => {
   onMount(() => {
-    historyModel.loadDataFx()
+    checkPersistedDataFx()
   })
 
   return (
