@@ -1,32 +1,16 @@
-import {createEvent, sample} from 'effector'
 import {
   uploadFilesFx,
-  uploadCompleted,
   $hasPersistedData,
   $uploadProgress,
   filesSelected,
 } from '@/features/Magic/dataLoader'
 
-const pageOpened = createEvent<void>('main page opened')
-const showStatsClicked = createEvent<void>('show stats clicked')
-
-sample({
-  clock: uploadFilesFx.doneData,
-  target: uploadCompleted,
-})
-
-sample({
-  clock: pageOpened,
-  source: $hasPersistedData,
-  filter: (hasData) => hasData,
-  target: showStatsClicked,
-})
+// Redirect when data exists (either already persisted or just uploaded)
+const $shouldRedirect = $hasPersistedData
 
 export const mainPageModel = {
-  pageOpened,
-  showStatsClicked,
   filesSelected,
   $uploadProgress,
-  $hasPersistedData,
+  $shouldRedirect,
   uploadPending: uploadFilesFx.pending,
 }

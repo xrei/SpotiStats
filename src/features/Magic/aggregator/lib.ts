@@ -10,7 +10,6 @@ import type {
 
 export const createTrack = (id: string, e: StreamingEntry): EnrichedTrack => ({
   id,
-  timestamps: [],
   firstTs: null,
   lastTs: null,
   playsCount: 0,
@@ -109,7 +108,6 @@ export const updateTimeRange = (
 export const updateTrackFromEntry = (t: EnrichedTrack, e: StreamingEntry) => {
   t.playsCount += 1
   t.totalMs += e.ms_played
-  t.timestamps.push(e.ts)
   updateTimeRange(t, e.ts)
 
   t.meta.platforms[e.platform] = (t.meta.platforms[e.platform] ?? 0) + 1

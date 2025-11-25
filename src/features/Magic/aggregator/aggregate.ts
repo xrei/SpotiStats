@@ -91,8 +91,6 @@ export const aggregateStreamingHistory = (
 
   const summary = summariseEntities(artists, byTrack)
 
-  for (const t of byTrack.values()) t.timestamps.sort()
-
   return {
     artists,
     albums,

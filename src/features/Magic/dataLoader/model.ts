@@ -5,7 +5,6 @@ import {indexedDBService} from '@/shared/lib/indexedDB'
 import type {UploadProgress, UploadResult} from './types'
 
 export const filesSelected = createEvent<File[]>('files selected')
-export const uploadCompleted = createEvent<void>('upload completed')
 export const clearData = createEvent<void>('clear data')
 
 const uploadProgressUpdated = createEvent<UploadProgress>('upload progress updated')
@@ -171,6 +170,9 @@ sample({
   fn: () => false,
   target: $hasPersistedData,
 })
+
+// Reset upload progress when data is cleared
+$uploadProgress.reset(clearPersistedDataFx.done)
 
 sample({
   clock: checkPersistedDataFx.doneData,

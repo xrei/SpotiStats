@@ -1,6 +1,5 @@
 export {
   filesSelected,
-  uploadCompleted,
   clearData,
   $hasPersistedData,
   $uploadProgress,

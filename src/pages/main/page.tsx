@@ -1,34 +1,23 @@
-import {useNavigate} from '@solidjs/router'
+import {Navigate} from '@solidjs/router'
 import {useUnit} from 'effector-solid'
-import {Show, onMount} from 'solid-js'
+import {Show} from 'solid-js'
 import {Card} from '@/shared/ui/Card'
 import {FileUpload} from './ui/FileUpload'
 import {mainPageModel} from './model'
 
 const MainPage = () => {
-  const navigate = useNavigate()
-  const {pageOpened, showStatsClicked, filesSelected, $uploadProgress, uploadPending} =
-    mainPageModel
-  const [uploadProgress, isPending] = useUnit([$uploadProgress, uploadPending])
-
-  onMount(() => {
-    pageOpened()
-
-    const unsubscribe = showStatsClicked.watch(() => {
-      navigate('/artists', {replace: true})
-    })
-
-    return unsubscribe
-  })
-
-  const handleShowStats = () => {
-    showStatsClicked()
-  }
+  const {filesSelected, $uploadProgress, $shouldRedirect, uploadPending} = mainPageModel
+  const [uploadProgress, shouldRedirect, isPending] = useUnit([
+    $uploadProgress,
+    $shouldRedirect,
+    uploadPending,
+  ])
 
   const progress = () => uploadProgress()
 
   return (
-    <div class="flex h-full flex-col items-center justify-center p-6">
+    <Show when={!shouldRedirect()} fallback={<Navigate href="/artists" />}>
+      <div class="flex h-full flex-col items-center justify-center p-6">
       <Card class="w-full max-w-2xl p-8">
         <h1 class="mb-6 text-3xl font-bold">Upload Your Spotify Data</h1>
 
@@ -112,16 +101,12 @@ const MainPage = () => {
                   ` (skipped ${progress().invalidEntries} invalid)`}
               </p>
             </div>
-            <button
-              onClick={handleShowStats}
-              class="w-full rounded-lg bg-green-600 px-4 py-3 font-medium text-white transition-colors hover:bg-green-700"
-            >
-              Show me stats! 📊
-            </button>
+            <Navigate href="/artists" />
           </div>
         </Show>
       </Card>
-    </div>
+      </div>
+    </Show>
   )
 }
 

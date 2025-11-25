@@ -1,6 +1,5 @@
 export type EnrichedTrack = {
   id: string
-  timestamps: string[]
   firstTs: string | null
   lastTs: string | null
   playsCount: number
