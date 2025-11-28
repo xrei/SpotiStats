@@ -8,8 +8,13 @@ const METADATA_KEY = 'upload-info'
 
 export type UploadMetadata = {
   uploadedAt: string
-  fileCount: number
   totalEntries: number
+}
+
+export type StorageStats = {
+  entryCount: number
+  estimatedSizeBytes: number
+  metadata: UploadMetadata | null
 }
 
 class IndexedDBService {
@@ -152,6 +157,35 @@ class IndexedDBService {
 
   isSupported(): boolean {
     return typeof indexedDB !== 'undefined'
+  }
+
+  async getStats(): Promise<StorageStats> {
+    const db = await this.initDB()
+
+    const [entryCount, metadata] = await Promise.all([
+      this.getEntryCount(db),
+      this.getMetadata(),
+    ])
+
+    // Rough estimate: ~500 bytes per entry (JSON overhead + field data)
+    const estimatedSizeBytes = entryCount * 500
+
+    return {
+      entryCount,
+      estimatedSizeBytes,
+      metadata,
+    }
+  }
+
+  private getEntryCount(db: IDBDatabase): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([ENTRIES_STORE], 'readonly')
+      const store = transaction.objectStore(ENTRIES_STORE)
+      const request = store.count()
+
+      request.onerror = () => reject(request.error)
+      request.onsuccess = () => resolve(request.result)
+    })
   }
 }
 

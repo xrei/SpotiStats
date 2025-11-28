@@ -2,7 +2,7 @@ import {type JSX, Show} from 'solid-js'
 import {A, Navigate, useLocation} from '@solidjs/router'
 import {useUnit} from 'effector-solid'
 import {historyModel} from '@/features/Magic'
-import {$hasPersistedData, clearData} from '@/features/Magic/dataLoader'
+import {$hasPersistedData} from '@/features/Magic/dataLoader'
 import clsx from 'clsx'
 import {CogIcon} from '@/shared/ui'
 
@@ -47,19 +47,11 @@ const Header = () => {
   const loc = useLocation()
   const isActive = (path: string) => loc.pathname.startsWith(path)
 
-  const handleClearData = () => {
-    if (confirm('Clear all uploaded data? You will need to re-upload your files.')) {
-      clearData()
-      // Navigation handled reactively by layout's <Navigate> when $hasPersistedData becomes false
-    }
-  }
-
   return (
     <header class="bg-bg-shell shadow-bg-shell/50 flex items-center gap-6 overflow-hidden px-5 py-3 shadow-lg md:overflow-auto">
       <A href="/artists" class="text-text-strong text-lg font-semibold">
         🔮
       </A>
-      {/* Spotistats */}
       <nav class="flex items-center gap-2">
         <NavLink href="/artists" active={isActive('/artists')}>
           Artists
@@ -72,22 +64,13 @@ const Header = () => {
         </NavLink>
       </nav>
 
-      <button
-        type="button"
-        onClick={handleClearData}
-        class="text-text-muted hover:bg-surface-hover focus-ring ml-auto rounded-md px-3 py-1.5 text-sm transition-colors"
-        title="Clear uploaded data"
-      >
-        Clear Data
-      </button>
-
-      <button
-        type="button"
-        class="text-text-muted hover:bg-surface-hover focus-ring rounded-md p-2"
+      <A
+        href="/settings"
+        class="text-text-muted hover:bg-surface-hover focus-ring ml-auto rounded-md p-2"
         aria-label="Settings"
       >
         <CogIcon class="size-5" />
-      </button>
+      </A>
     </header>
   )
 }

@@ -33,7 +33,6 @@ const saveToIndexedDBFx = createEffect<StreamingEntry[], void>(
     await indexedDBService.saveEntries(entries)
     await indexedDBService.setMetadata({
       uploadedAt: new Date().toISOString(),
-      fileCount: 1,
       totalEntries: entries.length,
     })
   },

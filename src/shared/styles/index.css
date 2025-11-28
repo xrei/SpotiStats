@@ -21,6 +21,10 @@
   --color-accent-2: #8f3d5e;
   --color-accent-3: #8b6acb;
 
+  /* danger */
+  --color-danger: #a63d3d;
+  --color-danger-hover: #c44848;
+
   /* badges */
   --color-badge-1-bg: #2a1822;
   --color-badge-1-tx: #e7bccb;

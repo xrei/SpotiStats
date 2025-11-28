@@ -1,4 +1,4 @@
-import {createStore, createEvent, combine} from 'effector'
+import {createStore, createEvent, combine, sample} from 'effector'
 import {historyModel, getEntityId, type EntityType, type Entity} from '@/features/Magic'
 import type {PeakActivity} from './types'
 import {buildWeekWindows, buildMonthWindows} from './lib/windows'
@@ -48,9 +48,17 @@ export const createPeakActivityModel = (entityType: EntityType) => {
     },
   )
 
+  const reset = createEvent('')
+
+  sample({
+    clock: reset,
+    target: $currentEntity.reinit,
+  })
+
   return {
     entityChanged,
     $peakActivity,
+    reset,
   }
 }
 

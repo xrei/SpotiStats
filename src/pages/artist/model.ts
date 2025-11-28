@@ -60,5 +60,5 @@ sample({
 
 sample({
   clock: ArtistPageGate.close,
-  target: [$artistData.reinit, $popularTracks.reinit],
+  target: [$artistData.reinit, $popularTracks.reinit, artistPeakActivityModel.reset],
 })
