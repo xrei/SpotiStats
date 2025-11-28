@@ -4,6 +4,7 @@ import {AppLayout} from './layout'
 import {onMount} from 'solid-js'
 import {checkPersistedDataFx, loadPersistedDataFx} from '@/features/Magic/dataLoader'
 import {sample} from 'effector'
+import {AppErrorBoundary, ToastContainer} from '@/shared/ui'
 
 sample({
   clock: checkPersistedDataFx.doneData,
@@ -17,8 +18,9 @@ export const App = () => {
   })
 
   return (
-    <>
+    <AppErrorBoundary>
       <Router root={AppLayout}>{routes}</Router>
-    </>
+      <ToastContainer />
+    </AppErrorBoundary>
   )
 }

@@ -2,6 +2,7 @@ import {createEffect, createEvent, createStore, sample} from 'effector'
 import type {StreamingEntry} from '../data/entry'
 import {validateBatch} from '../data/validation'
 import {indexedDBService} from '@/shared/lib/indexedDB'
+import {showError} from '@/shared/ui/Toast'
 import type {UploadProgress, UploadResult} from './types'
 
 export const filesSelected = createEvent<File[]>('files selected')
@@ -175,5 +176,46 @@ $uploadProgress.reset(clearPersistedDataFx.done)
 
 sample({
   clock: checkPersistedDataFx.doneData,
+  target: $hasPersistedData,
+})
+
+// Error handlers for effects
+
+// saveToIndexedDBFx - show toast on save failure
+sample({
+  clock: saveToIndexedDBFx.fail,
+  fn: ({error}) => {
+    console.error('Failed to save data:', error)
+    showError('Failed to save data. Please try again.')
+  },
+})
+
+// loadPersistedDataFx - show toast and reset state
+sample({
+  clock: loadPersistedDataFx.fail,
+  fn: ({error}) => {
+    console.error('Failed to load data:', error)
+    showError('Failed to load your data.')
+    return false
+  },
+  target: $hasPersistedData,
+})
+
+// clearPersistedDataFx - show toast on clear failure
+sample({
+  clock: clearPersistedDataFx.fail,
+  fn: ({error}) => {
+    console.error('Failed to clear data:', error)
+    showError('Failed to clear data. Please try again.')
+  },
+})
+
+// checkPersistedDataFx - silent failure, just log and default to false
+sample({
+  clock: checkPersistedDataFx.fail,
+  fn: ({error}) => {
+    console.error('Failed to check persisted data:', error)
+    return false
+  },
   target: $hasPersistedData,
 })

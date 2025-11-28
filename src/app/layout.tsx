@@ -1,10 +1,10 @@
-import {type JSX, Show} from 'solid-js'
+import {type JSX, Show, Suspense} from 'solid-js'
 import {A, Navigate, useLocation} from '@solidjs/router'
 import {useUnit} from 'effector-solid'
 import {historyModel} from '@/features/Magic'
 import {$hasPersistedData} from '@/features/Magic/dataLoader'
 import clsx from 'clsx'
-import {CogIcon} from '@/shared/ui'
+import {CogIcon, Loading} from '@/shared/ui'
 
 export const AppLayout = (props: {children?: JSX.Element}) => {
   const [artistsInfo, hasData] = useUnit([historyModel.$artistsInfo, $hasPersistedData])
@@ -24,16 +24,11 @@ export const AppLayout = (props: {children?: JSX.Element}) => {
           <Header />
         </Show>
         <main class="no-scroll flex min-h-0 flex-1 flex-col">
-          <Show
-            when={!isLoading()}
-            fallback={
-              <div class="flex flex-1 items-center justify-center text-3xl">
-                Loading...
-              </div>
-            }
-          >
-            {props.children}
-          </Show>
+          <Suspense fallback={<Loading />}>
+            <Show when={!isLoading()} fallback={<Loading />}>
+              {props.children}
+            </Show>
+          </Suspense>
         </main>
         <footer class="shadow-bg-shell/50 border-t-line/30 border-t shadow-lg">
           <div class="text-text-muted px-10 py-4 text-sm">

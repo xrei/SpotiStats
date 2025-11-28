@@ -21,10 +21,16 @@ export const VirtualList = <T,>(props: VirtualListProps<T>) => {
 
   let scrollRef!: HTMLDivElement
 
-  const estimate = (i: number) =>
-    typeof props.estimateSize === 'function'
-      ? (props.estimateSize as (i: number, it: T) => number)(i, src()[i])
-      : (props.estimateSize ?? 44)
+  const estimate = (i: number) => {
+    const arr = src()
+    if (typeof props.estimateSize === 'function') {
+      const item = arr[i]
+      return item !== undefined
+        ? (props.estimateSize as (i: number, it: T) => number)(i, item)
+        : 44
+    }
+    return props.estimateSize ?? 44
+  }
 
   const getKey = props.getItemKey ?? ((_: T, i: number) => i)
   const count = createMemo(() => src().length)
@@ -72,18 +78,22 @@ export const VirtualList = <T,>(props: VirtualListProps<T>) => {
         style={{height: `${totalSize()}px`}}
       >
         <For each={virtualItems()}>
-          {(v) => (
-            <div
-              ref={(el) => rowVirtualizer.measureElement(el)}
-              data-index={v.index}
-              class={clsx('absolute right-0 left-0')}
-              style={{
-                transform: `translateY(${v.start}px)`,
-              }}
-            >
-              {props.children(src()[v.index], v.index)}
-            </div>
-          )}
+          {(v) => {
+            const item = src()[v.index]
+            if (item === undefined) return null
+            return (
+              <div
+                ref={(el) => rowVirtualizer.measureElement(el)}
+                data-index={v.index}
+                class={clsx('absolute right-0 left-0')}
+                style={{
+                  transform: `translateY(${v.start}px)`,
+                }}
+              >
+                {props.children(item, v.index)}
+              </div>
+            )
+          }}
         </For>
       </div>
     </div>

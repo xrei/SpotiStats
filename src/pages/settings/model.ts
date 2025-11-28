@@ -2,6 +2,7 @@ import {createEffect, createStore, sample} from 'effector'
 import {createGate} from 'effector-solid'
 import {indexedDBService, type StorageStats} from '@/shared/lib/indexedDB'
 import {clearData, clearPersistedDataFx} from '@/features/Magic/dataLoader'
+import {showError} from '@/shared/ui/Toast'
 
 export const SettingsPageGate = createGate('SettingsPageGate')
 
@@ -26,6 +27,17 @@ sample({
 sample({
   clock: SettingsPageGate.close,
   target: $storageStats.reinit,
+})
+
+// loadStatsFx - show toast and set null on failure
+sample({
+  clock: loadStatsFx.fail,
+  fn: ({error}) => {
+    console.error('Failed to load stats:', error)
+    showError('Failed to load storage statistics.')
+    return null
+  },
+  target: $storageStats,
 })
 
 export {clearData, clearPersistedDataFx}

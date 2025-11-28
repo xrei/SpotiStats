@@ -85,6 +85,14 @@ sample({
 
 const $artistsInfo = $history.map((h) => h.summary)
 
+// loadDataFx - dev only, silent failure (just log)
+sample({
+  clock: loadDataFx.fail,
+  fn: ({error}) => {
+    console.error('Failed to load dev data:', error)
+  },
+})
+
 export const historyModel = {
   loadDataFx,
   $history,
