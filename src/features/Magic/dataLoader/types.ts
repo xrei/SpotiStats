@@ -2,7 +2,6 @@ export type UploadStatus =
   | 'idle'
   | 'uploading'
   | 'validating'
-  | 'persisting'
   | 'complete'
   | 'error'
 

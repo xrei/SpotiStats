@@ -1,15 +1,45 @@
-import {createEffect, createEvent, createStore, sample} from 'effector'
+import {combine, createEffect, createEvent, createStore, sample} from 'effector'
 import type {StreamingEntry} from '../data/entry'
 import {validateBatch} from '../data/validation'
-import {indexedDBService} from '@/shared/lib/indexedDB'
-import {showError} from '@/shared/ui/Toast'
+import {indexedDBService, QuotaExceededError} from '@/shared/lib/indexedDB'
+import {toastAdded} from '@/shared/ui/Toast'
 import type {UploadProgress, UploadResult} from './types'
+
+// Event to reset in-memory history (exported for model.ts to use)
+export const resetHistory = createEvent<void>('reset history')
+
+const STORAGE_KEY = 'spotistats:hasData'
+
+// Synchronous check for initial render (no flicker)
+// Returns true if user previously had data, false otherwise
+export const getInitialHasDataSync = (): boolean => {
+  if (typeof window === 'undefined') return false
+  try {
+    return localStorage.getItem(STORAGE_KEY) === 'true'
+  } catch {
+    return false
+  }
+}
+
+const setHasDataSync = (value: boolean) => {
+  if (typeof window === 'undefined') return
+  try {
+    if (value) {
+      localStorage.setItem(STORAGE_KEY, 'true')
+    } else {
+      localStorage.removeItem(STORAGE_KEY)
+    }
+  } catch {
+    // Ignore localStorage errors
+  }
+}
 
 export const filesSelected = createEvent<File[]>('files selected')
 export const clearData = createEvent<void>('clear data')
 
 const uploadProgressUpdated = createEvent<UploadProgress>('upload progress updated')
 
+// Whether data is persisted in IndexedDB (for next session)
 export const $hasPersistedData = createStore<boolean>(false, {
   name: 'has persisted data',
 })
@@ -28,7 +58,7 @@ export const $uploadProgress = createStore<UploadProgress>(
 
 $uploadProgress.on(uploadProgressUpdated, (_, progress) => progress)
 
-const saveToIndexedDBFx = createEffect<StreamingEntry[], void>(
+export const saveToIndexedDBFx = createEffect<StreamingEntry[], void>(
   async (entries: StreamingEntry[]) => {
     await indexedDBService.clearAllData()
     await indexedDBService.saveEntries(entries)
@@ -96,6 +126,7 @@ export const uploadFilesFx = createEffect<File[], UploadResult>(async (files: Fi
   }
 })
 
+// When upload completes: trigger background save (non-blocking)
 sample({
   clock: uploadFilesFx.doneData,
   fn: (result) => result.entries,
@@ -123,6 +154,7 @@ export const checkPersistedDataFx = createEffect<void, boolean>(async () => {
   return indexedDBService.hasData()
 })
 
+// Upload complete → status 'complete' IMMEDIATELY (don't wait for save)
 sample({
   clock: uploadFilesFx.doneData,
   fn: (result) => ({
@@ -136,12 +168,14 @@ sample({
   target: $uploadProgress,
 })
 
+// Save to IndexedDB done → mark as persisted (for next session)
 sample({
-  clock: uploadFilesFx.doneData,
+  clock: saveToIndexedDBFx.done,
   fn: () => true,
   target: $hasPersistedData,
 })
 
+// Upload failed → show error status
 sample({
   clock: uploadFilesFx.fail,
   fn: ({error}: {error: Error}) => ({
@@ -154,6 +188,9 @@ sample({
   }),
   target: $uploadProgress,
 })
+
+// NOTE: saveToIndexedDBFx.fail does NOT set status to error
+// User can still use the app, data just won't persist to next session
 
 sample({
   clock: filesSelected,
@@ -171,6 +208,13 @@ sample({
   target: $hasPersistedData,
 })
 
+// Reset in-memory history when persisted data is cleared
+// This triggers layout redirect to / via $hasData becoming false
+sample({
+  clock: clearPersistedDataFx.done,
+  target: resetHistory,
+})
+
 // Reset upload progress when data is cleared
 $uploadProgress.reset(clearPersistedDataFx.done)
 
@@ -181,41 +225,82 @@ sample({
 
 // Error handlers for effects
 
-// saveToIndexedDBFx - show toast on save failure
+// saveToIndexedDBFx - show toast on save failure (background, non-blocking)
 sample({
   clock: saveToIndexedDBFx.fail,
-  fn: ({error}) => {
-    console.error('Failed to save data:', error)
-    showError('Failed to save data. Please try again.')
-  },
+  fn: ({error}) => ({
+    message:
+      error instanceof QuotaExceededError
+        ? `${error.message} Your data won't be saved for next visit.`
+        : 'Failed to save data. Your data won\'t persist after closing the browser.',
+    type: 'error' as const,
+  }),
+  target: toastAdded,
 })
 
-// loadPersistedDataFx - show toast and reset state
+// loadPersistedDataFx - show toast
 sample({
   clock: loadPersistedDataFx.fail,
-  fn: ({error}) => {
-    console.error('Failed to load data:', error)
-    showError('Failed to load your data.')
-    return false
-  },
+  fn: () => ({message: 'Failed to load your data.', type: 'error' as const}),
+  target: toastAdded,
+})
+
+// loadPersistedDataFx - reset state
+sample({
+  clock: loadPersistedDataFx.fail,
+  fn: () => false,
   target: $hasPersistedData,
 })
 
 // clearPersistedDataFx - show toast on clear failure
 sample({
   clock: clearPersistedDataFx.fail,
-  fn: ({error}) => {
-    console.error('Failed to clear data:', error)
-    showError('Failed to clear data. Please try again.')
+  fn: () => ({message: 'Failed to clear data. Please try again.', type: 'error' as const}),
+  target: toastAdded,
+})
+
+// checkPersistedDataFx - silent failure, default to false
+sample({
+  clock: checkPersistedDataFx.fail,
+  fn: () => false,
+  target: $hasPersistedData,
+})
+
+// Combined loading state: true while checking OR loading persisted data
+// Used by UI to show "Loading..." instead of upload form
+export const $isLoadingPersistedData = combine(
+  checkPersistedDataFx.pending,
+  loadPersistedDataFx.pending,
+  (checking, loading) => checking || loading,
+)
+
+// Whether data is being saved to IndexedDB
+// Used to prevent page close/refresh during save
+export const $isSavingToStorage = saveToIndexedDBFx.pending
+
+// Whether the initial persistence check has completed
+// Starts false, becomes true after checkPersistedDataFx finishes (success or fail)
+// Used to prevent premature redirects before we know if user has data
+export const $isInitialized = createStore(false, {name: 'is initialized'})
+
+sample({
+  clock: [checkPersistedDataFx.done, checkPersistedDataFx.fail],
+  fn: () => true,
+  target: $isInitialized,
+})
+
+// Sync localStorage ONLY on explicit save/clear (not on store init or check)
+// This prevents clearing localStorage on app startup before we read it
+sample({
+  clock: saveToIndexedDBFx.done,
+  fn: () => {
+    setHasDataSync(true)
   },
 })
 
-// checkPersistedDataFx - silent failure, just log and default to false
 sample({
-  clock: checkPersistedDataFx.fail,
-  fn: ({error}) => {
-    console.error('Failed to check persisted data:', error)
-    return false
+  clock: clearPersistedDataFx.done,
+  fn: () => {
+    setHasDataSync(false)
   },
-  target: $hasPersistedData,
 })

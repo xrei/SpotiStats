@@ -1,8 +1,12 @@
 export {
   filesSelected,
   clearData,
-  $hasPersistedData,
   $uploadProgress,
+  $isLoadingPersistedData,
+  $isSavingToStorage,
+  $isInitialized,
+  getInitialHasDataSync,
+  resetHistory,
   uploadFilesFx,
   loadPersistedDataFx,
   clearPersistedDataFx,

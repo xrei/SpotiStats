@@ -10,7 +10,7 @@ export const FileUpload = (props: FileUploadProps) => {
   return (
     <>
       <div
-        class="hover:bg-gray-750 mb-6 cursor-pointer rounded-lg border-2 border-dashed border-gray-600 bg-gray-800 p-12 text-center transition-colors hover:border-gray-500"
+        class="group bg-surface-2/60 hover:bg-surface-2/80 hover:ring-accent/20 relative cursor-pointer overflow-hidden rounded-xl p-14 text-center ring-1 ring-white/3 transition-all duration-300 ring-inset"
         onDrop={(e) => {
           e.preventDefault()
           const files = e.dataTransfer?.files
@@ -32,13 +32,20 @@ export const FileUpload = (props: FileUploadProps) => {
         onDragOver={(e) => e.preventDefault()}
         onClick={() => inputRef.click()}
       >
-        <div class="mb-4 text-6xl">📁</div>
-        <p class="mb-2 text-lg font-medium">
-          Drop your JSON files here or click to browse
-        </p>
-        <p class="text-sm text-gray-400">
-          Select all your Extended Streaming History JSON files
-        </p>
+        <div class="from-accent/5 pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+        <div class="relative">
+          <div class="text-text-dim/60 group-hover:text-text-dim mx-auto mb-4 text-6xl transition-colors">
+            📁
+          </div>
+          <p class="text-text-strong mb-1 text-lg font-medium">
+            Drop your JSON files here
+          </p>
+          <p class="text-text-muted text-sm">
+            or <span class="text-accent group-hover:underline">browse</span> to select
+            files
+          </p>
+        </div>
       </div>
 
       <input

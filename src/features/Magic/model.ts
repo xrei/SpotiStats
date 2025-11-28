@@ -2,7 +2,7 @@ import {createEffect, createStore, createEvent, sample} from 'effector'
 import {loadData} from './data'
 import type {StreamingEntry} from './data/entry'
 import {aggregateStreamingHistory, type HistoryData} from './aggregator'
-import {loadPersistedDataFx, uploadFilesFx, $hasPersistedData} from './dataLoader'
+import {loadPersistedDataFx, uploadFilesFx, resetHistory} from './dataLoader'
 
 const $rawData = createStore<StreamingEntry[][]>([])
 
@@ -24,6 +24,7 @@ sample({
   target: $rawData,
 })
 
+// Upload complete → immediately load data to memory (don't wait for IndexedDB save)
 sample({
   clock: uploadFilesFx.doneData,
   fn: (result) => [result.entries],
@@ -85,6 +86,12 @@ sample({
 
 const $artistsInfo = $history.map((h) => h.summary)
 
+// Has data in memory (for current session navigation)
+const $hasData = $history.map((h) => h.summary.totalArtists > 0)
+
+// Reset history store to initial state (for clearing data)
+$history.reset(resetHistory)
+
 // loadDataFx - dev only, silent failure (just log)
 sample({
   clock: loadDataFx.fail,
@@ -102,5 +109,5 @@ export const historyModel = {
   $albumsTree,
   $tracksMap,
   $rawData,
-  $hasPersistedData,
+  $hasData,
 }
