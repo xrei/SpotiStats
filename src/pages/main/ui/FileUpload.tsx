@@ -10,7 +10,7 @@ export const FileUpload = (props: FileUploadProps) => {
   return (
     <>
       <div
-        class="mb-6 cursor-pointer rounded-lg border-2 border-dashed border-gray-600 bg-gray-800 p-12 text-center transition-colors hover:border-gray-500 hover:bg-gray-750"
+        class="hover:bg-gray-750 mb-6 cursor-pointer rounded-lg border-2 border-dashed border-gray-600 bg-gray-800 p-12 text-center transition-colors hover:border-gray-500"
         onDrop={(e) => {
           e.preventDefault()
           const files = e.dataTransfer?.files

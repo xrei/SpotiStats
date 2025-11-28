@@ -27,17 +27,19 @@ export const AppLayout = (props: {children?: JSX.Element}) => {
           <Show
             when={!isLoading()}
             fallback={
-              <div class="flex flex-1 items-center justify-center text-3xl">Loading...</div>
+              <div class="flex flex-1 items-center justify-center text-3xl">
+                Loading...
+              </div>
             }
           >
             {props.children}
           </Show>
         </main>
-      <footer class="shadow-bg-shell/50 border-t-line/30 border-t shadow-lg">
-        <div class="text-text-muted px-10 py-4 text-sm">
-          &copy; {new Date().getFullYear()} Rei. Distasteful vibes strictly prohibited.
-        </div>
-      </footer>
+        <footer class="shadow-bg-shell/50 border-t-line/30 border-t shadow-lg">
+          <div class="text-text-muted px-10 py-4 text-sm">
+            &copy; {new Date().getFullYear()} Rei. Distasteful vibes strictly prohibited.
+          </div>
+        </footer>
       </div>
     </Show>
   )

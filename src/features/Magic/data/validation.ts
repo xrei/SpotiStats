@@ -10,11 +10,7 @@ export function validateEntry(entry: unknown): entry is StreamingEntry {
   const e = entry as Record<string, unknown>
 
   // Basic sanity check - just verify it has the core fields
-  return (
-    typeof e.ts === 'string' &&
-    typeof e.ms_played === 'number' &&
-    e.ms_played >= 0
-  )
+  return typeof e.ts === 'string' && typeof e.ms_played === 'number' && e.ms_played >= 0
 }
 
 export function validateBatch(entries: unknown[]): ValidationResult {

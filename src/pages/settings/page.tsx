@@ -49,7 +49,10 @@ const SettingsPage = () => {
               <h2 class="text-text-strong text-lg font-semibold">Your data</h2>
               <div class="grid grid-cols-2 gap-4">
                 <StatRow label="Entries" value={s().entryCount.toLocaleString()} />
-                <StatRow label="Estimated size" value={formatBytes(s().estimatedSizeBytes)} />
+                <StatRow
+                  label="Estimated size"
+                  value={formatBytes(s().estimatedSizeBytes)}
+                />
                 <StatRow
                   label="Total listening time"
                   value={dateLib.msToHMS(artistsInfo().totalPlayedTimeMs)}
@@ -60,8 +63,14 @@ const SettingsPage = () => {
                     value={`${dateLib.formatDate(timeIndex().minDay, 'medium')} - ${dateLib.formatDate(timeIndex().maxDay, 'medium')}`}
                   />
                 </Show>
-                <StatRow label="Artists" value={artistsInfo().totalArtists.toLocaleString()} />
-                <StatRow label="Albums" value={artistsInfo().totalAlbums.toLocaleString()} />
+                <StatRow
+                  label="Artists"
+                  value={artistsInfo().totalArtists.toLocaleString()}
+                />
+                <StatRow
+                  label="Albums"
+                  value={artistsInfo().totalAlbums.toLocaleString()}
+                />
                 <StatRow
                   label="Tracks"
                   value={artistsInfo().uniqueTracksCount.toLocaleString()}
@@ -77,8 +86,8 @@ const SettingsPage = () => {
             <Card>
               <h2 class="text-text-strong text-lg font-semibold">Danger zone</h2>
               <p class="text-text-muted text-sm">
-                This will permanently delete all your uploaded streaming history from this browser.
-                You will need to re-upload your data to use the app again.
+                This will permanently delete all your uploaded streaming history from this
+                browser. You will need to re-upload your data to use the app again.
               </p>
               <button
                 type="button"
