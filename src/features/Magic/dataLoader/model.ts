@@ -223,18 +223,27 @@ sample({
   target: $hasPersistedData,
 })
 
+sample({
+  clock: checkPersistedDataFx.doneData,
+  filter: (hasData) => hasData,
+  target: loadPersistedDataFx,
+})
+
 // Error handlers for effects
 
 // saveToIndexedDBFx - show toast on save failure (background, non-blocking)
 sample({
   clock: saveToIndexedDBFx.fail,
-  fn: ({error}) => ({
-    message:
-      error instanceof QuotaExceededError
-        ? `${error.message} Your data won't be saved for next visit.`
-        : 'Failed to save data. Your data won\'t persist after closing the browser.',
-    type: 'error' as const,
-  }),
+  fn: ({error}) => {
+    console.error('IndexedDB save failed:', error)
+    return {
+      message:
+        error instanceof QuotaExceededError
+          ? `${error.message} Your data won't be saved for next visit.`
+          : "Failed to save data. Your data won't persist after closing the browser.",
+      type: 'error' as const,
+    }
+  },
   target: toastAdded,
 })
 
@@ -255,7 +264,10 @@ sample({
 // clearPersistedDataFx - show toast on clear failure
 sample({
   clock: clearPersistedDataFx.fail,
-  fn: () => ({message: 'Failed to clear data. Please try again.', type: 'error' as const}),
+  fn: () => ({
+    message: 'Failed to clear data. Please try again.',
+    type: 'error' as const,
+  }),
   target: toastAdded,
 })
 

@@ -43,9 +43,6 @@
   --color-focus-ring: rgba(193, 83, 130, 0.45);
 }
 
-@layer utilities {
-}
-
 html,
 body,
 #root {

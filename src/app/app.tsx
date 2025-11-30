@@ -3,15 +3,8 @@ import {Router} from '@solidjs/router'
 import {AppLayout} from './layout'
 import {onCleanup, onMount} from 'solid-js'
 import {useUnit} from 'effector-solid'
-import {checkPersistedDataFx, loadPersistedDataFx, $isSavingToStorage} from '@/features/Magic/dataLoader'
-import {sample} from 'effector'
+import {checkPersistedDataFx, $isSavingToStorage} from '@/features/Magic/dataLoader'
 import {AppErrorBoundary, ToastContainer} from '@/shared/ui'
-
-sample({
-  clock: checkPersistedDataFx.doneData,
-  filter: (hasData) => hasData,
-  target: loadPersistedDataFx,
-})
 
 export const App = () => {
   const isSaving = useUnit($isSavingToStorage)
@@ -39,4 +32,6 @@ export const App = () => {
       <ToastContainer />
     </AppErrorBoundary>
   )
+
+  // return <div class="flex items-center justify-center p-10 text-6xl">kek</div>
 }

@@ -6,38 +6,38 @@ import {Loading} from '@/shared/ui'
 import {mainPageModel} from './model'
 
 const MainPage = () => {
-  const {filesSelected, $uploadProgress, $shouldRedirect, uploadPending, initialHasData} =
+  const {filesSelected, $uploadProgress, $shouldRedirect, $hasData, $isInitialized, uploadPending, initialHasData} =
     mainPageModel
-  const [uploadProgress, shouldRedirect, isPending] = useUnit([
+  const [uploadProgress, shouldRedirect, hasData, isInitialized, isPending] = useUnit([
     $uploadProgress,
     $shouldRedirect,
+    $hasData,
+    $isInitialized,
     uploadPending,
   ])
 
   const progress = () => uploadProgress()
 
-  // Returning user (had data before): show Loading until redirect
-  // Uses Switch because we need reactivity on shouldRedirect
-  if (initialHasData) {
-    return (
-      <Show when={!shouldRedirect()} fallback={<Navigate href="/artists" />}>
-        <Loading />
-      </Show>
-    )
-  }
+  // After initialization, if no data - show upload UI (handles clear data case)
+  // initialHasData is stale after clear, so we check actual state
+  const showLoading = () => initialHasData && !isInitialized()
+  const shouldShowUpload = () => !initialHasData || (isInitialized() && !hasData())
 
-  // Fresh user: render upload UI DIRECTLY without any conditional wrapper
-  // Navigate component only mounts when shouldRedirect becomes true (after upload)
   return (
     <>
       <Show when={shouldRedirect()}>
         <Navigate href="/artists" />
       </Show>
-      <UploadContent
-        filesSelected={filesSelected}
-        progress={progress}
-        isPending={isPending}
-      />
+      <Show when={showLoading()}>
+        <Loading />
+      </Show>
+      <Show when={shouldShowUpload()}>
+        <UploadContent
+          filesSelected={filesSelected}
+          progress={progress}
+          isPending={isPending}
+        />
+      </Show>
     </>
   )
 }
