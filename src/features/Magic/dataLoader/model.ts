@@ -175,6 +175,12 @@ sample({
   target: $hasPersistedData,
 })
 
+sample({
+  clock: saveToIndexedDBFx.done,
+  fn: () => ({message: 'Data saved', type: 'info' as const}),
+  target: toastAdded,
+})
+
 // Upload failed → show error status
 sample({
   clock: uploadFilesFx.fail,
@@ -303,16 +309,10 @@ sample({
 
 // Sync localStorage ONLY on explicit save/clear (not on store init or check)
 // This prevents clearing localStorage on app startup before we read it
-sample({
-  clock: saveToIndexedDBFx.done,
-  fn: () => {
-    setHasDataSync(true)
-  },
+saveToIndexedDBFx.done.watch(() => {
+  setHasDataSync(true)
 })
 
-sample({
-  clock: clearPersistedDataFx.done,
-  fn: () => {
-    setHasDataSync(false)
-  },
+clearPersistedDataFx.done.watch(() => {
+  setHasDataSync(false)
 })
