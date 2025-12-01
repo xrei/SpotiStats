@@ -69,8 +69,19 @@ export const AppLayout = (props: {children?: JSX.Element}) => {
 
 const Header = () => {
   const loc = useLocation()
-  const isActive = (path: string) => loc.pathname.startsWith(path)
   const [isSaving] = useUnit([$isSavingToStorage])
+
+  // /artists/:artist/:album is album detail page, should highlight Albums
+  const isAlbumDetailPage = () => {
+    const segments = loc.pathname.split('/').filter(Boolean)
+    return segments[0] === 'artists' && segments.length === 3
+  }
+
+  const isArtistsActive = () =>
+    loc.pathname.startsWith('/artists') && !isAlbumDetailPage()
+  const isAlbumsActive = () =>
+    loc.pathname.startsWith('/albums') || isAlbumDetailPage()
+  const isTracksActive = () => loc.pathname.startsWith('/tracks')
 
   return (
     <header class="bg-bg-shell shadow-bg-shell/50 flex items-center gap-6 overflow-visible px-5 py-3 shadow-lg md:overflow-auto">
@@ -78,13 +89,13 @@ const Header = () => {
         🔮
       </A>
       <nav class="flex items-center gap-2">
-        <NavLink href="/artists" active={isActive('/artists')}>
+        <NavLink href="/artists" active={isArtistsActive()}>
           Artists
         </NavLink>
-        <NavLink href="/albums" active={isActive('/albums')}>
+        <NavLink href="/albums" active={isAlbumsActive()}>
           Albums
         </NavLink>
-        <NavLink href="/tracks" active={isActive('/tracks')}>
+        <NavLink href="/tracks" active={isTracksActive()}>
           Tracks
         </NavLink>
       </nav>
@@ -113,10 +124,7 @@ const Footer = () => (
 )
 
 function NavLink(props: {href: string; active?: boolean; children: JSX.Element}) {
-  const base = clsx(
-    'relative inline-flex items-center px-3 py-1.5 text-sm transition-colors ',
-    'text-text hover:text-text-strong',
-  )
+  const base = 'relative inline-flex items-center px-3 py-1.5 transition-colors'
 
   const underline = clsx(
     'after:absolute after:left-1/2 after:-translate-x-1/2 after:bottom-0',
@@ -133,7 +141,12 @@ function NavLink(props: {href: string; active?: boolean; children: JSX.Element})
     <A
       href={props.href}
       aria-current={props.active ? 'page' : undefined}
-      class={base + ' ' + (props.active ? underlineActive : underlineInactive)}
+      class={clsx(
+        base,
+        props.active
+          ? ['text-accent font-semibold', underlineActive]
+          : ['text-text hover:text-text-strong', underlineInactive],
+      )}
     >
       {props.children}
     </A>

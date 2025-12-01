@@ -52,10 +52,13 @@ function UploadContent(props: {
     <div class="mx-auto flex flex-1 w-full max-w-2xl flex-col px-4 py-6 sm:py-10 lg:px-8">
       <div class="border-line/50 bg-surface-1 shadow-accent/5 my-auto flex w-full flex-col rounded-2xl border p-8 shadow-2xl sm:p-10">
         <div class="mb-8 text-center">
-          <h1 class="text-text-strong mb-2 text-3xl font-bold tracking-tight sm:text-4xl">
+          <h1 class="animated-gradient-text mb-2 text-3xl font-bold tracking-tight sm:text-4xl">
             Upload Your Spotify Data
           </h1>
-          <p class="text-text-muted text-sm">Discover insights from your listening history</p>
+          <p class="text-text-muted mb-3 text-sm">Discover insights from your listening history</p>
+          <p class="text-text-dim text-xs">
+            Total play time • Top artists • Peak activity • Listening trends
+          </p>
         </div>
 
         <Switch>
@@ -68,26 +71,33 @@ function UploadContent(props: {
           <Match when={true}>
             <FileUpload onFilesSelected={props.filesSelected} accept=".json" multiple />
 
-            <div class="mt-8 space-y-3">
+            <div class="mt-12 space-y-3">
               <p class="text-text-dim text-xs font-medium uppercase tracking-wider">
                 How to get your data
               </p>
-              <ol class="text-text-muted space-y-2 text-sm">
+              <ol class="space-y-2 text-sm opacity-60">
                 <li class="flex gap-3">
-                  <span class="text-accent font-medium">1.</span>
-                  Go to your Spotify Account privacy settings
+                  <span class="text-accent font-medium opacity-100">1.</span>
+                  <a
+                    href="https://www.spotify.com/account/privacy/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-text-strong underline underline-offset-2 hover:text-accent"
+                  >
+                    Go to your Spotify Account privacy settings
+                  </a>
                 </li>
                 <li class="flex gap-3">
-                  <span class="text-accent font-medium">2.</span>
-                  Request "Extended streaming history"
+                  <span class="text-accent font-medium opacity-100">2.</span>
+                  <span class="text-text-muted">Request "Extended streaming history"</span>
                 </li>
                 <li class="flex gap-3">
-                  <span class="text-accent font-medium">3.</span>
-                  Wait for email (takes a few days)
+                  <span class="text-accent font-medium opacity-100">3.</span>
+                  <span class="text-text-muted">Wait for email (takes a few days)</span>
                 </li>
                 <li class="flex gap-3">
-                  <span class="text-accent font-medium">4.</span>
-                  Upload all JSON files here
+                  <span class="text-accent font-medium opacity-100">4.</span>
+                  <span class="text-text-muted">Upload all JSON files here</span>
                 </li>
               </ol>
             </div>
