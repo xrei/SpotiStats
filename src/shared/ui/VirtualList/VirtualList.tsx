@@ -1,4 +1,4 @@
-import {For, type Accessor, type JSX, createMemo, createEffect} from 'solid-js'
+import {For, type Accessor, type JSX, createMemo} from 'solid-js'
 import {createVirtualizer} from '@tanstack/solid-virtual'
 import clsx from 'clsx'
 
@@ -14,6 +14,7 @@ type VirtualListProps<T> = {
 }
 
 export const VirtualList = <T,>(props: VirtualListProps<T>) => {
+  // Normalize items to accessor
   const src: Accessor<T[]> =
     typeof props.items === 'function'
       ? (props.items as Accessor<T[]>)
@@ -21,6 +22,7 @@ export const VirtualList = <T,>(props: VirtualListProps<T>) => {
 
   let scrollRef!: HTMLDivElement
 
+  // Estimate size function - handles both fixed and dynamic sizes
   const estimate = (i: number) => {
     const arr = src()
     if (typeof props.estimateSize === 'function') {
@@ -32,11 +34,22 @@ export const VirtualList = <T,>(props: VirtualListProps<T>) => {
     return props.estimateSize ?? 44
   }
 
+  // Key function for items
   const getKey = props.getItemKey ?? ((_: T, i: number) => i)
+
+  // Reactive count - triggers virtualizer update when items change
   const count = createMemo(() => src().length)
 
-  const rowVirtualizer = createVirtualizer({
-    count: count(),
+  // TanStack solid-virtual handles reactivity internally:
+  // - Uses createStore for virtualItems (Solid Store - deeply reactive)
+  // - Uses createSignal for totalSize
+  // - Internal createComputed tracks options via getter and calls measure()
+  // - onChange callback updates store with reconcile() for efficient updates
+  const virtualizer = createVirtualizer({
+    // Using getter syntax for reactive count tracking
+    get count() {
+      return count()
+    },
     getScrollElement: () => scrollRef,
     estimateSize: estimate,
     overscan: props.overscan ?? 12,
@@ -45,24 +58,6 @@ export const VirtualList = <T,>(props: VirtualListProps<T>) => {
       return i < arr.length ? getKey(arr[i]!, i) : i
     },
   })
-
-  createEffect(() => {
-    rowVirtualizer.setOptions({
-      ...rowVirtualizer.options,
-      count: count(),
-      getScrollElement: () => scrollRef,
-      estimateSize: estimate,
-      overscan: props.overscan ?? 12,
-      getItemKey: (i) => {
-        const arr = src()
-        return i < arr.length ? getKey(arr[i]!, i) : i
-      },
-    })
-    rowVirtualizer.measure()
-  })
-
-  const virtualItems = () => rowVirtualizer.getVirtualItems()
-  const totalSize = () => rowVirtualizer.getTotalSize()
 
   return (
     <div
@@ -75,22 +70,21 @@ export const VirtualList = <T,>(props: VirtualListProps<T>) => {
     >
       <div
         class={clsx('relative w-full', props.innerClass)}
-        style={{height: `${totalSize()}px`}}
+        style={{height: `${virtualizer.getTotalSize()}px`}}
       >
-        <For each={virtualItems()}>
+        <For each={virtualizer.getVirtualItems()}>
           {(v) => {
-            const item = src()[v.index]
-            if (item === undefined) return null
+            const item = () => src()[v.index]
             return (
               <div
-                ref={(el) => rowVirtualizer.measureElement(el)}
+                ref={(el) => virtualizer.measureElement(el)}
                 data-index={v.index}
                 class={clsx('absolute right-0 left-0')}
                 style={{
                   transform: `translateY(${v.start}px)`,
                 }}
               >
-                {props.children(item, v.index)}
+                {item() && props.children(item()!, v.index)}
               </div>
             )
           }}
