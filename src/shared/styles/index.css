@@ -163,3 +163,69 @@ button {
 .animate-toast-out {
   animation: toast-slide-out 0.3s ease-in forwards;
 }
+
+.sync-indicator-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: inherit;
+}
+
+.cog-base {
+  fill: none;
+  stroke: var(--color-text-dim);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.4;
+}
+
+.cog-line {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 22 78;
+  animation: cog-flow 4s linear infinite;
+  /* Subtle glow */
+  filter: drop-shadow(0 0 2px var(--color-accent));
+}
+
+.cog-node {
+  fill: var(--color-accent-3);
+  opacity: 0.2;
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: node-pulse 4s ease-out infinite;
+}
+
+.cog-node-0 { animation-delay: 2.80s; }
+.cog-node-1 { animation-delay: 3.40s; }
+.cog-node-2 { animation-delay: 0.12s; }
+.cog-node-3 { animation-delay: 0.72s; }
+.cog-node-4 { animation-delay: 1.32s; }
+.cog-node-5 { animation-delay: 2.08s; }
+
+.cog-center-ring {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 12 88;
+  animation: center-spin 3s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes cog-flow {
+  to { stroke-dashoffset: -100; }
+}
+
+@keyframes node-pulse {
+  0%, 100% { opacity: 0.2; transform: scale(1); filter: none; }
+  8% { opacity: 1; transform: scale(1.5); filter: drop-shadow(0 0 3px var(--color-accent-3)); }
+  18% { opacity: 0.2; transform: scale(1); filter: none; }
+}
+
+@keyframes center-spin {
+  to { stroke-dashoffset: -100; }
+}

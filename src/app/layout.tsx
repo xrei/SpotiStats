@@ -2,9 +2,13 @@ import {type JSX, Match, Show, Suspense, Switch} from 'solid-js'
 import {A, Navigate, useLocation} from '@solidjs/router'
 import {useUnit} from 'effector-solid'
 import {historyModel} from '@/features/Magic'
-import {$isLoadingPersistedData, $isInitialized} from '@/features/Magic/dataLoader'
+import {
+  $isLoadingPersistedData,
+  $isInitialized,
+  $isSavingToStorage,
+} from '@/features/Magic/dataLoader'
 import clsx from 'clsx'
-import {CogIcon, Loading} from '@/shared/ui'
+import {CogIcon, Loading, SyncIndicator} from '@/shared/ui'
 
 export const AppLayout = (props: {children?: JSX.Element}) => {
   const [artistsInfo, hasData, isLoadingPersisted, isInitialized] = useUnit([
@@ -66,9 +70,10 @@ export const AppLayout = (props: {children?: JSX.Element}) => {
 const Header = () => {
   const loc = useLocation()
   const isActive = (path: string) => loc.pathname.startsWith(path)
+  const [isSaving] = useUnit([$isSavingToStorage])
 
   return (
-    <header class="bg-bg-shell shadow-bg-shell/50 flex items-center gap-6 overflow-hidden px-5 py-3 shadow-lg md:overflow-auto">
+    <header class="bg-bg-shell shadow-bg-shell/50 flex items-center gap-6 overflow-visible px-5 py-3 shadow-lg md:overflow-auto">
       <A href="/artists" class="text-text-strong text-lg font-semibold">
         🔮
       </A>
@@ -84,13 +89,17 @@ const Header = () => {
         </NavLink>
       </nav>
 
-      <A
-        href="/settings"
-        class="text-text-muted hover:bg-surface-hover focus-ring ml-auto rounded-md p-2"
-        aria-label="Settings"
-      >
-        <CogIcon class="size-5" />
-      </A>
+      <div class="ml-auto flex items-center gap-3">
+        <A
+          href="/settings"
+          class="text-text-muted hover:bg-surface-hover focus-ring rounded-md p-2"
+          aria-label="Settings"
+        >
+          <Show when={isSaving()} fallback={<CogIcon class="size-6" />}>
+            <SyncIndicator active={true} />
+          </Show>
+        </A>
+      </div>
     </header>
   )
 }
